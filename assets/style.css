@@ -1,0 +1,463 @@
+/* ==========================================================================
+   AI Governance Design Index — stylesheet
+   --------------------------------------------------------------------------
+   You almost never need to edit this file. Colours, spacing and type are all
+   set by the variables in the :root block just below, so if you want to
+   change the look, change a value there rather than hunting through the file.
+   ========================================================================== */
+
+:root {
+  /* --- Colour: light mode ------------------------------------------------ */
+  --paper:      #FBFAF7;   /* page background        */
+  --paper-2:    #F4F2EC;   /* cards, table stripes   */
+  --ink:        #17171B;   /* main text              */
+  --ink-soft:   #55555F;   /* secondary text         */
+  --ink-faint:  #86868F;   /* captions, meta         */
+  --rule:       #E2DFD6;   /* hairlines              */
+  --rule-soft:  #EDEAE2;
+  --accent:     #1E5F55;   /* links, focus ring      */
+
+  /* Axis colours. Used for the three index axes, consistently, everywhere. */
+  --axis-1:     #2F4B7C;   /* Power Concentration    */
+  --axis-2:     #9A4636;   /* Entrenchment           */
+  --axis-3:     #6A7A38;   /* Implementation Friction*/
+  --axis-1-bg:  #2f4b7c22;
+  --axis-2-bg:  #9a463622;
+  --axis-3-bg:  #6a7a3822;
+
+  --flag:       #8A5A00;   /* provisional / caution  */
+  --flag-bg:    #FDF4E0;
+  --flag-rule:  #E9D5A8;
+
+  /* --- Type -------------------------------------------------------------- */
+  --serif: "Source Serif 4", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --sans:  "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+
+  /* --- Layout ------------------------------------------------------------ */
+  --measure: 68ch;   /* comfortable reading width */
+  --wide:    1120px; /* width for tables and figures */
+  --gutter:  clamp(1.25rem, 5vw, 3rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:     #131317;
+    --paper-2:   #1C1C22;
+    --ink:       #ECEBE6;
+    --ink-soft:  #ABABB4;
+    --ink-faint: #83838D;
+    --rule:      #2E2E36;
+    --rule-soft: #24242B;
+    --accent:    #6FBFAE;
+    --axis-1:    #8AA8DA;
+    --axis-2:    #DE9382;
+    --axis-3:    #B7C77C;
+    --axis-1-bg: #8aa8da26;
+    --axis-2-bg: #de938226;
+    --axis-3-bg: #b7c77c26;
+    --flag:      #E7BE6A;
+    --flag-bg:   #241E10;
+    --flag-rule: #4A3C1C;
+  }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; line-height: 1.2; margin: 0 0 .5em; letter-spacing: -0.011em; }
+h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.1rem); letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.4rem, 1.15rem + 1.1vw, 1.9rem); margin-top: 2.6em; }
+h3 { font-size: 1.16rem; margin-top: 2em; }
+h2:first-child, h3:first-child { margin-top: 0; }
+
+p { margin: 0 0 1.1em; }
+p:last-child { margin-bottom: 0; }
+
+a { color: inherit; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+a:hover { color: var(--accent); }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px;
+}
+
+strong { font-weight: 650; }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 3rem 0; }
+
+::selection { background: var(--axis-1-bg); }
+
+/* Small-caps label used above sections and in metadata */
+.label {
+  font-family: var(--sans);
+  font-size: .688rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--ink); color: var(--paper);
+  padding: .6rem 1rem; z-index: 100; font-family: var(--sans); font-size: .875rem;
+}
+.skip-link:focus { left: 0; }
+
+/* ==========================================================================
+   Layout containers
+   ========================================================================== */
+
+.wrap  { width: 100%; max-width: var(--wide); margin-inline: auto; padding-inline: var(--gutter); }
+.prose { max-width: var(--measure); }
+.prose-wide { max-width: 82ch; }
+
+main { padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(4rem, 9vw, 7rem); }
+
+/* Space between consecutive top-level sections. Section headings reset their
+   own top margin (h2:first-child), so the gap belongs to the section. */
+main section + section,
+main nav + section,
+main section + nav { margin-top: clamp(3rem, 6.5vw, 5rem); }
+
+/* ==========================================================================
+   Header / navigation
+   ========================================================================== */
+
+.site-header {
+  border-bottom: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: saturate(1.6) blur(8px);
+  position: sticky; top: 0; z-index: 50;
+}
+.site-header .wrap {
+  display: flex; align-items: center; gap: 1.5rem;
+  min-height: 68px; flex-wrap: wrap;
+}
+.brand {
+  font-family: var(--serif); font-weight: 600; font-size: 1.02rem;
+  text-decoration: none; letter-spacing: -0.01em; line-height: 1.25;
+  display: flex; align-items: center; gap: .6rem; margin-right: auto;
+}
+.brand:hover { color: inherit; }
+.brand .mark { flex: none; }
+.brand .mark svg { display: block; }
+
+.site-nav { display: flex; gap: 1.35rem; font-family: var(--sans); font-size: .875rem; }
+.site-nav a {
+  text-decoration: none; color: var(--ink-soft); padding: .25rem 0;
+  border-bottom: 1.5px solid transparent;
+}
+.site-nav a:hover { color: var(--ink); }
+.site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 550; }
+
+/* ==========================================================================
+   Page opener
+   ========================================================================== */
+
+.opener { margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
+.opener .label { display: block; margin-bottom: .9rem; }
+.opener h1 { margin-bottom: .45em; max-width: 20ch; }
+.lede {
+  font-size: clamp(1.1rem, 1.02rem + .35vw, 1.28rem);
+  line-height: 1.55; color: var(--ink-soft); max-width: 56ch; margin: 0;
+}
+.opener-rule { border: 0; border-top: 1px solid var(--rule); margin: clamp(2rem, 4vw, 3rem) 0 0; }
+
+/* ==========================================================================
+   Notices (provisional banner, methodology notes)
+   ========================================================================== */
+
+.notice {
+  border: 1px solid var(--flag-rule);
+  background: var(--flag-bg);
+  border-radius: 4px;
+  padding: 1rem 1.15rem;
+  margin: 0 0 2.25rem;
+  font-family: var(--sans);
+  font-size: .875rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.notice .label { color: var(--flag); display: block; margin-bottom: .35rem; }
+.notice p { margin-bottom: .6em; }
+
+.note {
+  border-left: 2px solid var(--rule);
+  padding: .1rem 0 .1rem 1.1rem;
+  margin: 1.6rem 0;
+  font-family: var(--sans);
+  font-size: .875rem;
+  line-height: 1.62;
+  color: var(--ink-soft);
+}
+.note .label { color: var(--ink-faint); display: block; margin-bottom: .3rem; }
+
+/* ==========================================================================
+   People (about page)
+   ========================================================================== */
+
+.people {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: clamp(2rem, 4vw, 3rem);
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+.person { display: flex; flex-direction: column; }
+.person img {
+  width: 104px; height: 104px; border-radius: 50%;
+  object-fit: cover; display: block; margin-bottom: 1.1rem;
+  background: var(--paper-2);
+  box-shadow: 0 0 0 1px var(--rule);
+}
+.person h3 { margin: 0 0 .15rem; font-size: 1.1rem; }
+.person .role {
+  font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint);
+  margin: 0 0 .85rem; line-height: 1.45;
+}
+.person .bio { font-size: .96rem; line-height: 1.6; color: var(--ink-soft); margin: 0 0 .9rem; }
+.person .links { font-family: var(--sans); font-size: .8125rem; margin: auto 0 0; display: flex; gap: 1rem; flex-wrap: wrap; }
+
+/* ==========================================================================
+   Rubric page
+   ========================================================================== */
+
+.axis { margin-top: clamp(3.5rem, 7vw, 5rem); scroll-margin-top: 90px; }
+.axis-head { border-top: 2px solid var(--axis-c, var(--rule)); padding-top: 1.1rem; margin-bottom: 1.6rem; }
+.axis-head .label { color: var(--axis-c); display: block; margin-bottom: .5rem; }
+.axis-head h2 { margin: 0 0 .5em; }
+.axis-head .axis-def { max-width: 62ch; color: var(--ink-soft); margin: 0; }
+.axis-1 { --axis-c: var(--axis-1); }
+.axis-2 { --axis-c: var(--axis-2); }
+.axis-3 { --axis-c: var(--axis-3); }
+
+.criterion {
+  border-top: 1px solid var(--rule-soft);
+  padding: 1.6rem 0 .4rem;
+  scroll-margin-top: 90px;
+}
+.criterion h3 {
+  margin: 0 0 .4rem; font-size: 1.06rem;
+  display: flex; gap: .6rem; align-items: baseline; flex-wrap: wrap;
+}
+.criterion h3 .num {
+  font-family: var(--sans); font-size: .75rem; font-weight: 600;
+  color: var(--axis-c); letter-spacing: .04em; flex: none;
+  font-variant-numeric: tabular-nums;
+}
+.criterion .q { color: var(--ink-soft); max-width: 62ch; margin: 0 0 1rem; font-size: .99rem; }
+
+.anchors { list-style: none; margin: 0 0 .5rem; padding: 0; display: grid; gap: .3rem; max-width: 66ch; }
+.anchors li {
+  display: grid; grid-template-columns: 3.1rem 1fr; gap: .85rem; align-items: baseline;
+  font-family: var(--sans); font-size: .85rem; line-height: 1.55; color: var(--ink-soft);
+  padding: .32rem 0;
+}
+.anchors .v {
+  font-weight: 600; font-variant-numeric: tabular-nums; text-align: right;
+  color: var(--ink); background: var(--axis-bg-c, var(--paper-2));
+  border-radius: 3px; padding: .1rem .4rem; font-size: .8rem;
+}
+.axis-1 .anchors .v { background: var(--axis-1-bg); }
+.axis-2 .anchors .v { background: var(--axis-2-bg); }
+.axis-3 .anchors .v { background: var(--axis-3-bg); }
+
+.changed {
+  font-family: var(--sans); font-size: .75rem; font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--flag); border: 1px solid var(--flag-rule); background: var(--flag-bg);
+  border-radius: 999px; padding: .05rem .5rem; flex: none;
+}
+.provenance {
+  font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint);
+  margin: .75rem 0 0; max-width: 62ch; line-height: 1.55;
+}
+
+/* Contents list on the rubric page */
+.toc { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.toc > li { border-top: 2px solid var(--axis-c); padding-top: .8rem; }
+.toc .label { display: block; margin-bottom: .5rem; color: var(--axis-c); }
+.toc ol { list-style: none; padding: 0; margin: 0; font-family: var(--sans); font-size: .85rem; display: grid; gap: .3rem; }
+.toc ol a { text-decoration: none; color: var(--ink-soft); }
+.toc ol a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: .18em; }
+
+/* ==========================================================================
+   Framework list
+   ========================================================================== */
+
+.frameworks { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 0; }
+.frameworks li { border-top: 1px solid var(--rule-soft); padding: 1.35rem 0; }
+.frameworks li:last-child { border-bottom: 1px solid var(--rule-soft); }
+.frameworks h3 { margin: 0 0 .3rem; font-size: 1.05rem; }
+.frameworks .fw-meta { font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint); margin: 0 0 .55rem; }
+.frameworks p { font-size: .95rem; color: var(--ink-soft); margin: 0 0 .6rem; max-width: 66ch; }
+.frameworks .srcs { font-family: var(--sans); font-size: .8125rem; display: flex; gap: .35rem 1.1rem; flex-wrap: wrap; margin: 0; }
+
+/* ==========================================================================
+   Score summary cards
+   ========================================================================== */
+
+.summary {
+  display: grid; gap: 1px; margin: 2rem 0 0;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  background: var(--rule-soft); border: 1px solid var(--rule-soft);
+}
+.summary-card { background: var(--paper); padding: 1.15rem 1.2rem 1.25rem; }
+.summary-card h3 { margin: 0 0 .1rem; font-size: .98rem; line-height: 1.3; min-height: 2.6em; }
+@media (max-width: 560px) { .summary-card h3 { min-height: 0; } }
+.summary-card .fw-meta { font-family: var(--sans); font-size: .75rem; color: var(--ink-faint); margin: 0 0 .95rem; }
+.mini { display: grid; gap: .55rem; margin: 0; }
+.mini > div { display: grid; grid-template-columns: 1fr 2.4rem; gap: .5rem; align-items: center; }
+.mini .k { font-family: var(--sans); font-size: .7rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; }
+.mini .v { font-family: var(--sans); font-size: .95rem; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.mini .track { grid-column: 1 / -1; height: 4px; border-radius: 2px; background: var(--rule-soft); overflow: hidden; margin-top: -.35rem; }
+.mini .fill { display: block; height: 100%; border-radius: 2px; width: 0; }
+.mini .a1 .fill { background: var(--axis-1); } .mini .a1 .v { color: var(--axis-1); }
+.mini .a2 .fill { background: var(--axis-2); } .mini .a2 .v { color: var(--axis-2); }
+.mini .a3 .fill { background: var(--axis-3); } .mini .a3 .v { color: var(--axis-3); }
+
+/* ==========================================================================
+   Score matrix
+   ========================================================================== */
+
+.table-wrap {
+  margin: 1.75rem 0 0; overflow-x: auto;
+  border: 1px solid var(--rule); border-radius: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+table.matrix { border-collapse: collapse; width: 100%; min-width: 720px; font-family: var(--sans); font-size: .85rem; }
+table.matrix caption { caption-side: top; text-align: left; padding: 0 0 .9rem; font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint); }
+table.matrix th, table.matrix td { padding: .58rem .7rem; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--rule-soft); }
+table.matrix thead th {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--paper-2); border-bottom: 1px solid var(--rule);
+  font-weight: 600; font-size: .75rem; letter-spacing: .02em; line-height: 1.35;
+  vertical-align: bottom; white-space: normal;
+}
+table.matrix thead th:first-child { min-width: 230px; }
+table.matrix tbody th {
+  font-weight: 450; color: var(--ink); text-align: left; min-width: 230px;
+  background: var(--paper); position: sticky; left: 0; z-index: 1;
+  border-right: 1px solid var(--rule-soft);
+}
+table.matrix tbody th a { text-decoration: none; color: inherit; }
+table.matrix tbody th a:hover { text-decoration: underline; text-underline-offset: .18em; color: var(--accent); }
+table.matrix tbody th .num {
+  font-size: .7rem; font-weight: 600; color: var(--ink-faint);
+  font-variant-numeric: tabular-nums; margin-right: .45rem;
+}
+table.matrix td.score {
+  font-variant-numeric: tabular-nums; font-weight: 550; text-align: right;
+  position: relative; white-space: nowrap;
+}
+table.matrix td.score .bar {
+  position: absolute; left: 0; bottom: 0; height: 3px; width: 0;
+  background: var(--axis-c, var(--ink-faint)); opacity: .75;
+}
+table.matrix tbody.g1 { --axis-c: var(--axis-1); }
+table.matrix tbody.g2 { --axis-c: var(--axis-2); }
+table.matrix tbody.g3 { --axis-c: var(--axis-3); }
+
+table.matrix tr.group-head th {
+  background: var(--paper-2); position: sticky; left: 0;
+  font-family: var(--sans); font-size: .7rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--axis-c);
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  padding-top: .7rem; padding-bottom: .7rem;
+}
+table.matrix tr.group-head td { background: var(--paper-2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+
+table.matrix tr.mean-row th, table.matrix tr.mean-row td {
+  font-weight: 700; background: color-mix(in srgb, var(--paper-2) 65%, var(--paper));
+  border-bottom: 1px solid var(--rule);
+}
+table.matrix tr.mean-row td.score { color: var(--axis-c); font-size: .95rem; }
+table.matrix tr.mean-row th { font-weight: 700; }
+
+table.matrix th.sortable { cursor: pointer; user-select: none; }
+table.matrix th.sortable::after { content: "↕"; opacity: .3; margin-left: .35rem; font-size: .8em; }
+table.matrix th.sortable[aria-sort="ascending"]::after  { content: "↑"; opacity: .9; }
+table.matrix th.sortable[aria-sort="descending"]::after { content: "↓"; opacity: .9; }
+
+.scale-key {
+  display: flex; gap: 1.4rem; flex-wrap: wrap; align-items: center;
+  font-family: var(--sans); font-size: .78rem; color: var(--ink-faint);
+  margin: .9rem 0 0;
+}
+.scale-key .swatch { display: inline-block; width: .72rem; height: .72rem; border-radius: 2px; margin-right: .4rem; vertical-align: -1px; }
+
+/* ==========================================================================
+   Figures
+   ========================================================================== */
+
+figure { margin: 2.5rem 0 0; }
+figure img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--rule); border-radius: 4px; background: var(--paper-2);
+}
+figcaption {
+  font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint);
+  line-height: 1.6; margin-top: .75rem; max-width: 70ch;
+}
+figcaption b { color: var(--ink-soft); font-weight: 600; }
+
+/* The figures are generated with a light background. In dark mode they read as
+   printed plates rather than glowing panels; this takes the edge off. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) figure img { filter: brightness(.88) contrast(1.02); }
+}
+
+/* ==========================================================================
+   Citation block
+   ========================================================================== */
+
+.cite {
+  border: 1px solid var(--rule); border-radius: 4px;
+  padding: 1.15rem 1.25rem; margin: 2.5rem 0 0; background: var(--paper-2);
+}
+.cite .label { display: block; margin-bottom: .6rem; }
+.cite p { font-family: var(--sans); font-size: .85rem; line-height: 1.6; margin: 0; color: var(--ink-soft); }
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+  border-top: 1px solid var(--rule); padding-block: 2.5rem 3.5rem;
+  font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint);
+}
+.site-footer .wrap { display: flex; gap: 1.5rem 2.5rem; flex-wrap: wrap; align-items: flex-start; }
+.site-footer p { margin: 0 0 .4rem; max-width: 46ch; line-height: 1.6; }
+.site-footer nav { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-left: auto; }
+.site-footer a { color: var(--ink-soft); }
+
+/* ==========================================================================
+   Small screens
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .site-header .wrap { min-height: 0; padding-block: .85rem; row-gap: .5rem; }
+  .brand { margin-right: 0; width: 100%; }
+  .site-nav { gap: 1.1rem; }
+  table.matrix tbody th, table.matrix thead th:first-child { min-width: 180px; }
+  .site-footer nav { margin-left: 0; }
+}
+
+@media print {
+  .site-header, .site-footer nav, .skip-link { display: none; }
+  body { background: #fff; color: #000; font-size: 10.5pt; }
+  .table-wrap { overflow: visible; }
+}
