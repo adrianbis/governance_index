@@ -363,6 +363,10 @@ table.matrix td.score {
   font-variant-numeric: tabular-nums; font-weight: 550; text-align: right;
   position: relative; white-space: nowrap;
 }
+/* The "→ 60" shown on reverse-coded cells: the value that enters the mean. */
+table.matrix td.score .inv {
+  font-weight: 500; font-size: .78em; color: var(--ink-faint); margin-left: .3em;
+}
 table.matrix td.score .bar {
   position: absolute; left: 0; bottom: 0; height: 3px; width: 0;
   background: var(--axis-c, var(--ink-faint)); opacity: .75;

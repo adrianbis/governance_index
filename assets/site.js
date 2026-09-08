@@ -42,11 +42,15 @@
       var totals = {}, counts = {};
 
       body.querySelectorAll("tr:not(.mean-row)").forEach(function (row) {
+        // Rows marked data-reverse are named for the property that REDUCES the
+        // axis concept (amendment difficulty, path dependency). Their raw score
+        // is shown as coded, but enters the mean as 100 minus that value.
+        var reverse = row.getAttribute("data-reverse") === "true";
         row.querySelectorAll("td.score[data-fw]").forEach(function (cell) {
           var fw = cell.getAttribute("data-fw");
           var v = parseFloat(cell.getAttribute("data-score"));
           if (isNaN(v)) return;
-          totals[fw] = (totals[fw] || 0) + v;
+          totals[fw] = (totals[fw] || 0) + (reverse ? 100 - v : v);
           counts[fw] = (counts[fw] || 0) + 1;
         });
       });

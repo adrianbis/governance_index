@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>The index — AI Governance Design Index</title>
-<meta name="description" content="The full scoring rubric: three axes, fifteen indicators, and the anchor definitions used to score every AI governance framework in the index.">
+<meta name="description" content="The measurement guide: three axes, twelve features, and the scoring anchors used to code every AI governance framework in the index.">
 
 <link rel="canonical" href="https://example.org/rubric.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="The index — AI Governance Design Index">
-<meta property="og:description" content="Three axes, fifteen indicators, and the anchor definitions used to score every AI governance framework in the index.">
+<meta property="og:description" content="Three axes, twelve features, and the scoring anchors used to code every AI governance framework in the index.">
 <meta property="og:url" content="https://example.org/rubric.html">
 <meta property="og:image" content="https://example.org/assets/img/social-card.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -49,11 +49,11 @@
   <div class="wrap">
 
     <div class="opener prose-wide">
-      <span class="label">The index · version 1.0</span>
-      <h1>Three axes, fifteen indicators</h1>
+      <span class="label">The index · version 2.0</span>
+      <h1>Three axes, twelve features</h1>
       <p class="lede">
-        Every framework in the index is scored on the same fifteen indicators,
-        grouped into three axes. Each indicator runs from 0 to 100 against
+        Every framework in the index is coded on the same twelve features,
+        four to an axis, weighted equally. Each runs from 0 to 100 against
         published anchors, so any reader can check a score against the rule that
         produced it — and disagree with it precisely.
       </p>
@@ -68,56 +68,66 @@
 
       <h3>Higher always means more</h3>
       <p>
-        Within every axis, <strong>100 means more of the thing the axis is
-        named after</strong>, and 0 means none of it. A framework scoring 90 on
-        Power Concentration concentrates a great deal of power; one scoring 90 on
-        Entrenchment is very hard to change or leave.
+        Within every axis, <strong>100 means more of the thing the axis is named
+        after</strong>. A framework scoring 90 on power concentration concentrates
+        a great deal of authority; one scoring 90 on reversibility is easy to
+        amend, exit or let lapse.
       </p>
+
+      <h3>Two features are reverse-coded</h3>
       <p>
-        Two axes are named for the property being measured rather than its
-        desirable opposite, which keeps that rule intact. If you would rather
-        read them the other way round, the conversion is subtraction:
-        <em>reversibility</em> = 100 − Entrenchment, and
-        <em>efficiency</em> = 100 − Implementation Friction.
+        Two features on the reversibility axis are named for the property that
+        <em>reduces</em> reversibility. Their raw scores are recorded as named,
+        then inverted before entering the axis mean, so that all four features
+        count in the same direction.
       </p>
+      <div class="note">
+        <span class="label">The inversion, stated plainly</span>
+        <p>
+          <a href="#rv-2">2.2 Amendment difficulty</a> and
+          <a href="#rv-4">2.4 Path dependency</a> enter the reversibility mean as
+          <strong>100 minus their raw score</strong>. A framework that is hard to
+          amend and strongly self-reinforcing is <em>less</em> reversible, and the
+          arithmetic has to say so. Raw scores are shown on the
+          <a href="frameworks.html">scores page</a> alongside the value that
+          actually enters the mean.
+        </p>
+      </div>
 
       <h3>Scores describe, they do not rank</h3>
       <p>
-        A high score is not a criticism and a low score is not praise. Concentrated
-        authority buys enforceability at the cost of flexibility; loose coordination
-        buys adaptability at the cost of bite. The index makes those trade-offs
-        legible; it does not adjudicate them.
+        A high score is not a criticism and a low score is not praise.
+        Concentrated authority buys enforceability at the cost of flexibility;
+        loose coordination buys adaptability at the cost of bite. The index makes
+        those trade-offs legible; it does not adjudicate them.
       </p>
 
       <h3>How the axis scores are calculated</h3>
       <p>
-        An axis score is the <strong>unweighted mean of its five indicators</strong>,
-        rounded to the nearest whole number. All five indicators count equally.
-        This is a deliberate simplification: we have no defensible basis for
-        weighting one indicator above another, and equal weighting is the
-        assumption a reader is most likely to make anyway.
+        An axis score is the <strong>unweighted mean of its four features</strong>,
+        rounded to the nearest whole number, with the two reverse-coded features
+        inverted first. All four features count equally. This is a deliberate
+        simplification: we have no defensible basis for weighting one feature
+        above another, and equal weighting is the assumption a reader is most
+        likely to make anyway.
       </p>
 
       <h3>Values between the anchors</h3>
       <p>
         The anchors are reference points, not the only permitted answers. Where a
-        framework sits clearly between two anchors, a coder may assign an
-        intermediate value in steps of 5 — for example 25 for a framework adopted
-        in nine months, which falls between the “under six months” and “one to
-        three years” anchors on <a href="#if-1">adoption lag</a>. Every
-        intermediate value carries a written justification in the coding notes.
+        framework sits clearly between two anchors, we assign an intermediate
+        value in steps of 5 and record why. Intermediate values are common —
+        international frameworks rarely sit exactly on an anchor.
       </p>
 
-      <div class="note">
-        <span class="label">One indicator uses four anchors</span>
-        <p>
-          <a href="#pc-3">Enforcement power</a> is scored 0 / 33 / 66 / 100
-          rather than 0 / 50 / 100, because the step from “peer review” to
-          “financial penalties” to “binding supranational orders” is a genuinely
-          three-step ladder. This does not affect the axis mean, which averages
-          the values themselves rather than the anchor positions.
-        </p>
-      </div>
+      <h3>Every score carries its reasoning</h3>
+      <p>
+        Each coded cell has a one-line justification and a citation to a primary
+        source. This follows from the standard we hold ourselves to: Lincoln and
+        Guba establish <em>dependability</em> and <em>confirmability</em> through
+        exactly such an audit trail. A score without a recorded justification
+        would fail our own criterion.
+      </p>
     </section>
 
     <!-- ======================================================================
@@ -126,33 +136,30 @@
     <nav aria-label="Index contents">
       <ul class="toc">
         <li class="axis-1">
-          <span class="label">1 · Power Concentration</span>
+          <span class="label">1 · Power concentration</span>
           <ol>
-            <li><a href="#pc-1">1.1 Centralisation of decision-making</a></li>
-            <li><a href="#pc-2">1.2 Bindingness</a></li>
-            <li><a href="#pc-3">1.3 Enforcement power</a></li>
-            <li><a href="#pc-4">1.4 Exclusivity of agenda-setting</a></li>
-            <li><a href="#pc-5">1.5 Supranationality</a></li>
+            <li><a href="#pc-1">1.1 Decision-making concentration</a></li>
+            <li><a href="#pc-2">1.2 Agenda-setting concentration</a></li>
+            <li><a href="#pc-3">1.3 Resource concentration</a></li>
+            <li><a href="#pc-4">1.4 Technical concentration</a></li>
           </ol>
         </li>
         <li class="axis-2">
-          <span class="label">2 · Entrenchment</span>
+          <span class="label">2 · Reversibility</span>
           <ol>
-            <li><a href="#en-1">2.1 Amendment rigidity</a></li>
-            <li><a href="#en-2">2.2 Permanence of rules</a></li>
-            <li><a href="#en-3">2.3 Rigidity of technical updating</a></li>
-            <li><a href="#en-4">2.4 Exit cost</a></li>
-            <li><a href="#en-5">2.5 Insulation from legal challenge</a></li>
+            <li><a href="#rv-1">2.1 Exit possibility</a></li>
+            <li><a href="#rv-2">2.2 Amendment difficulty</a></li>
+            <li><a href="#rv-3">2.3 Sunset mechanisms</a></li>
+            <li><a href="#rv-4">2.4 Path dependency</a></li>
           </ol>
         </li>
         <li class="axis-3">
-          <span class="label">3 · Implementation Friction</span>
+          <span class="label">3 · Efficiency</span>
           <ol>
-            <li><a href="#if-1">3.1 Adoption lag</a></li>
-            <li><a href="#if-2">3.2 Deadline unworkability</a></li>
-            <li><a href="#if-3">3.3 Implementation support gap</a></li>
-            <li><a href="#if-4">3.4 Coordination cost</a></li>
-            <li><a href="#if-5">3.5 Adaptive rigidity</a></li>
+            <li><a href="#ef-1">3.1 Deliberation speed</a></li>
+            <li><a href="#ef-2">3.2 Binding implementation</a></li>
+            <li><a href="#ef-3">3.3 Optimised coordination</a></li>
+            <li><a href="#ef-4">3.4 Compliance verification</a></li>
           </ol>
         </li>
       </ul>
@@ -164,268 +171,182 @@
     <section class="axis axis-1" id="power-concentration">
       <div class="axis-head">
         <span class="label">Axis 1</span>
-        <h2>Power Concentration</h2>
+        <h2>Power concentration</h2>
         <p class="axis-def">
-          How much authority the framework gathers into a single locus, and how
-          compulsory the obligations it creates are. <strong>100 = authority is
-          maximally concentrated and obligations are hard law.</strong>
+          How much authority the framework gathers into a single locus.
+          <strong>100 = authority maximally concentrated.</strong>
+          The first two features follow the faces of power: who gets to vote, and
+          who decides what is discussed in the first place. The second two follow
+          the material and technical resources on which parties bargain.
         </p>
       </div>
 
       <article class="criterion" id="pc-1">
-        <h3><span class="num">1.1</span> Centralisation of decision-making</h3>
-        <p class="q">Is there a single entity with final rule-making or enforcement power?</p>
+        <h3><span class="num">1.1</span> Decision-making concentration</h3>
+        <p class="q">Who gets to vote, and can the outcome bind those who voted against it?</p>
         <ul class="anchors">
-          <li><span class="v">0</span><span>No central body; authority fully distributed.</span></li>
-          <li><span class="v">50</span><span>Coordinated but not binding — a secretariat or working group that convenes but cannot decide.</span></li>
-          <li><span class="v">100</span><span>A single entity with the final say, including through delegated instruments.</span></li>
+          <li><span class="v">0</span><span>All parties hold an equal vote and an effective veto; no weighting, no delegation of decision rights.</span></li>
+          <li><span class="v">50</span><span>Weighted or majority voting among states; no single actor can decide alone.</span></li>
+          <li><span class="v">100</span><span>A single body takes binding decisions that bind non-consenting parties.</span></li>
         </ul>
       </article>
 
       <article class="criterion" id="pc-2">
-        <h3><span class="num">1.2</span> Bindingness</h3>
-        <p class="q">Are the obligations legally compulsory, or voluntary?</p>
+        <h3><span class="num">1.2</span> Agenda-setting concentration</h3>
+        <p class="q">Who decides what reaches the table in the first place?</p>
         <ul class="anchors">
-          <li><span class="v">0</span><span>Soft law: voluntary codes, principles, best-practice guidance.</span></li>
-          <li><span class="v">50</span><span>Mixed — some obligations mandatory, some opt-in.</span></li>
-          <li><span class="v">100</span><span>Hard law, with legal sanctions for non-compliance.</span></li>
+          <li><span class="v">0</span><span>Any party, including non-state actors, can place items on the agenda; open co-decision on scope.</span></li>
+          <li><span class="v">50</span><span>Agenda set collectively by member states, or by a rotating or shared presidency.</span></li>
+          <li><span class="v">100</span><span>A single actor holds a formal or de facto monopoly on initiating proposals.</span></li>
         </ul>
       </article>
 
       <article class="criterion" id="pc-3">
-        <h3><span class="num">1.3</span> Enforcement power</h3>
-        <p class="q">Can the governing body impose fines, suspend rights, or issue binding orders?</p>
+        <h3><span class="num">1.3</span> Resource concentration</h3>
+        <p class="q">Does material weight — economy, population, market access — convert into formal influence?</p>
         <ul class="anchors">
-          <li><span class="v">0</span><span>No enforcement mechanism of any kind.</span></li>
-          <li><span class="v">33</span><span>Peer review or mandatory reporting only.</span></li>
-          <li><span class="v">66</span><span>Financial penalties possible.</span></li>
-          <li><span class="v">100</span><span>Full supranational enforcement: fines, suspension of rights, binding orders.</span></li>
+          <li><span class="v">0</span><span>No material asymmetry converts into influence; formal equality is also practical equality.</span></li>
+          <li><span class="v">50</span><span>Larger economies carry informal weight, but the formal rules do not encode it.</span></li>
+          <li><span class="v">100</span><span>Material weight is formally encoded — population- or GDP-weighted voting, budget control — or the framework's leverage rests on a market a few parties control.</span></li>
         </ul>
       </article>
 
       <article class="criterion" id="pc-4">
-        <h3><span class="num">1.4</span> Exclusivity of agenda-setting <span class="changed">renamed</span></h3>
-        <p class="q">Are non-state actors and smaller states shut out of setting the agenda, or guaranteed a voice in it?</p>
+        <h3><span class="num">1.4</span> Technical concentration</h3>
+        <p class="q">Who holds the know-how that determines what compliance actually means?</p>
         <ul class="anchors">
-          <li><span class="v">0</span><span>Broad stakeholder inclusion; civil society holds voting or co-decision rights.</span></li>
-          <li><span class="v">50</span><span>State-only participation, but with equal representation among states.</span></li>
-          <li><span class="v">100</span><span>Elite-driven; no meaningful non-state or small-state input.</span></li>
+          <li><span class="v">0</span><span>Technical content set through open, well-resourced participation; expertise widely distributed among parties.</span></li>
+          <li><span class="v">50</span><span>Technical work sits with a designated body, but participation is genuinely open and reviewable.</span></li>
+          <li><span class="v">100</span><span>Technical content delegated to a narrow expert body whose participation is costly, with documented asymmetry between large firms or dominant states and everyone else.</span></li>
         </ul>
-        <p class="provenance">
-          Originally drafted as <em>“inclusivity of agenda-setting”</em>, marked as an
-          inverse indicator. The anchors are unchanged — only the name, so that
-          the label points the same way as the numbers.
-        </p>
-      </article>
-
-      <article class="criterion" id="pc-5">
-        <h3><span class="num">1.5</span> Supranationality <span class="changed">renamed</span></h3>
-        <p class="q">Is sovereignty pooled, or does each state retain a veto?</p>
-        <ul class="anchors">
-          <li><span class="v">0</span><span>Unanimous intergovernmentalism; a state veto on all matters.</span></li>
-          <li><span class="v">50</span><span>Qualified majority voting in some areas.</span></li>
-          <li><span class="v">100</span><span>Full supranational delegation; sovereignty pooled.</span></li>
-        </ul>
-        <p class="provenance">
-          Originally <em>“supranational vs. intergovernmental”</em>. Anchors unchanged.
-        </p>
       </article>
     </section>
 
     <!-- ======================================================================
-         AXIS 2 — ENTRENCHMENT
+         AXIS 2 — REVERSIBILITY
          ====================================================================== -->
-    <section class="axis axis-2" id="entrenchment">
+    <section class="axis axis-2" id="reversibility">
       <div class="axis-head">
         <span class="label">Axis 2</span>
-        <h2>Entrenchment</h2>
+        <h2>Reversibility</h2>
         <p class="axis-def">
-          How hard the framework is to amend, update, exit or challenge once it is
-          in force. <strong>100 = maximally locked in.</strong> Read as
-          reversibility, this axis is simply inverted: reversibility = 100 − Entrenchment.
+          How easily a commitment can be undone — left, amended, allowed to lapse,
+          or escaped from. <strong>100 = maximally reversible.</strong>
+          The axis follows constitutional design literature, in which institutional
+          flexibility is preferred to irreversible commitment.
         </p>
       </div>
 
-      <div class="note">
-        <span class="label">Why this axis was renamed</span>
-        <p>
-          It was drafted as “Reversibility”, but its five indicators pointed in
-          two directions at once: high amendment rigidity makes a framework
-          <em>less</em> reversible, while strong sunset clauses and open judicial
-          standing make it <em>more</em> so. Averaged together as drafted, the
-          two halves cancelled and the axis score carried almost no information.
-          Three indicators have been inverted and the axis renamed so that all
-          five now count in the same direction. Every original anchor is recorded
-          below its replacement, so nothing has been lost.
-        </p>
-      </div>
+      <article class="criterion" id="rv-1">
+        <h3><span class="num">2.1</span> Exit possibility</h3>
+        <p class="q">Can a member state leave, and at what cost?</p>
+        <ul class="anchors">
+          <li><span class="v">0</span><span>No exit short of leaving a wider union; no withdrawal provision at all.</span></li>
+          <li><span class="v">50</span><span>Withdrawal provided for, with a notice period and moderate consequences.</span></li>
+          <li><span class="v">100</span><span>Participation voluntary throughout; a party may cease complying at any time with no consequence.</span></li>
+        </ul>
+      </article>
 
-      <article class="criterion" id="en-1">
-        <h3><span class="num">2.1</span> Amendment rigidity</h3>
+      <article class="criterion" id="rv-2">
+        <h3><span class="num">2.2</span> Amendment difficulty <span class="changed">reverse-coded</span></h3>
         <p class="q">How many veto players must agree before a core rule can be changed?</p>
         <ul class="anchors">
-          <li><span class="v">0</span><span>Simple majority; amendment is frequent and routine.</span></li>
-          <li><span class="v">50</span><span>Qualified majority, or bicameral approval required.</span></li>
-          <li><span class="v">100</span><span>Unanimity, or ratification by every member state.</span></li>
-        </ul>
-      </article>
-
-      <article class="criterion" id="en-2">
-        <h3><span class="num">2.2</span> Permanence of rules <span class="changed">inverted</span></h3>
-        <p class="q">Do the rules expire or face compulsory reconsideration, or do they simply persist?</p>
-        <ul class="anchors">
-          <li><span class="v">0</span><span>Mandatory periodic review, with automatic expiry if not renewed.</span></li>
-          <li><span class="v">50</span><span>Ad hoc review possible, but not compulsory.</span></li>
-          <li><span class="v">100</span><span>No review or sunset provision; rules persist indefinitely.</span></li>
+          <li><span class="v">0</span><span>Amendable by a single actor or simple majority; amendment is routine.</span></li>
+          <li><span class="v">50</span><span>Requires a defined multi-actor legislative procedure short of unanimity.</span></li>
+          <li><span class="v">100</span><span>Requires unanimity or ratification by every party.</span></li>
         </ul>
         <p class="provenance">
-          Originally <em>“sunset / review clauses”</em>, scored 0 = no provisions,
-          100 = mandatory review with automatic expiry. Inverted so that a
-          framework which is easy to reconsider scores <em>low</em> on entrenchment.
+          A high score here means <em>less</em> reversibility, so the raw score is
+          inverted before it enters the axis mean: it contributes
+          <strong>100 − raw</strong>. Both values are shown on the scores page.
         </p>
       </article>
 
-      <article class="criterion" id="en-3">
-        <h3><span class="num">2.3</span> Rigidity of technical updating <span class="changed">inverted</span></h3>
-        <p class="q">Can technical detail be updated without reopening the whole instrument?</p>
+      <article class="criterion" id="rv-3">
+        <h3><span class="num">2.3</span> Sunset mechanisms</h3>
+        <p class="q">Do commitments face compulsory review, or expire if not renewed?</p>
         <ul class="anchors">
-          <li><span class="v">0</span><span>Robust delegated authority for technical adaptation — delegated acts, comitology, a standing standards body.</span></li>
-          <li><span class="v">50</span><span>Limited delegation, confined to uncontroversial updates.</span></li>
-          <li><span class="v">100</span><span>Any change requires full legislative or treaty revision.</span></li>
+          <li><span class="v">0</span><span>No review or expiry provision; commitments persist indefinitely.</span></li>
+          <li><span class="v">50</span><span>Mandatory periodic review with reporting, but no expiry — review alone cannot end the commitment.</span></li>
+          <li><span class="v">100</span><span>Commitments expire automatically unless actively renewed.</span></li>
         </ul>
-        <p class="provenance">
-          Originally <em>“delegation of technical updates”</em>, scored 0 = full
-          revision required, 100 = robust delegation. Inverted for the same reason
-          as 2.2.
-        </p>
       </article>
 
-      <article class="criterion" id="en-4">
-        <h3><span class="num">2.4</span> Exit cost <span class="changed">renamed</span></h3>
-        <p class="q">What does it cost a participant to leave — in notice, penalties and consequences?</p>
+      <article class="criterion" id="rv-4">
+        <h3><span class="num">2.4</span> Path dependency <span class="changed">reverse-coded</span></h3>
+        <p class="q">Is the framework self-reinforcing — does staying in get cheaper, and leaving dearer, over time?</p>
         <ul class="anchors">
-          <li><span class="v">0</span><span>No notice period; immediate withdrawal with no consequences.</span></li>
-          <li><span class="v">50</span><span>Reasonable notice period (around twelve months) with minor penalties.</span></li>
-          <li><span class="v">100</span><span>Prohibitive exit clauses; severe economic or legal consequences.</span></li>
+          <li><span class="v">0</span><span>No lock-in; abandoning the framework strands no investment for parties or third parties.</span></li>
+          <li><span class="v">50</span><span>Some sunk compliance investment, but no dedicated institutions and no external adoption.</span></li>
+          <li><span class="v">100</span><span>Self-reinforcing: dedicated institutions, sunk compliance cost, certification or market infrastructure, and third-party adoption that raises the cost of reversal.</span></li>
         </ul>
         <p class="provenance">
-          Originally <em>“withdrawal ease”</em>. The anchors already ran from easy
-          to prohibitive, so only the name changed — “ease” scored 100 for the
-          hardest exit, which read backwards.
-        </p>
-      </article>
-
-      <article class="criterion" id="en-5">
-        <h3><span class="num">2.5</span> Insulation from legal challenge <span class="changed">inverted</span></h3>
-        <p class="q">Can individuals or organisations take the framework to court and force a reinterpretation?</p>
-        <ul class="anchors">
-          <li><span class="v">0</span><span>Individuals and organisations have standing before a supranational court.</span></li>
-          <li><span class="v">50</span><span>State-to-state dispute resolution only.</span></li>
-          <li><span class="v">100</span><span>No judicial review available; political discretion only.</span></li>
-        </ul>
-        <p class="provenance">
-          Originally <em>“justiciability”</em>, scored 0 = no judicial review,
-          100 = individual standing. Inverted: a framework open to legal challenge
-          is <em>less</em> entrenched, not more.
+          A high score here means <em>less</em> reversibility, so the raw score is
+          inverted before it enters the axis mean: it contributes
+          <strong>100 − raw</strong>.
         </p>
       </article>
     </section>
 
     <!-- ======================================================================
-         AXIS 3 — IMPLEMENTATION FRICTION
+         AXIS 3 — EFFICIENCY
          ====================================================================== -->
-    <section class="axis axis-3" id="implementation-friction">
+    <section class="axis axis-3" id="efficiency">
       <div class="axis-head">
         <span class="label">Axis 3</span>
-        <h2>Implementation Friction</h2>
+        <h2>Efficiency</h2>
         <p class="axis-def">
-          How slow, unsupported and coordination-heavy the framework is to put into
-          practice. <strong>100 = maximum friction.</strong> Read as efficiency,
-          the axis is inverted: efficiency = 100 − Implementation Friction.
+          How well the framework turns decisions into implementation.
+          <strong>100 = maximally efficient.</strong>
+          Efficiency is hard to sustain in global frameworks, which is precisely
+          why it tends to be bought by concentrating power rather than by
+          distributing deliberation.
         </p>
       </div>
 
-      <div class="note">
-        <span class="label">Why this axis was renamed</span>
-        <p>
-          It was drafted as “Efficiency”, but every one of its anchors ran from
-          0 = fast, supported and well-resourced to 100 = slow, unsupported and
-          consensus-bound. An axis called Efficiency on which the least efficient
-          framework scores highest is a reading trap. The anchors are all
-          unchanged; the axis and three of its indicators have been renamed to
-          match the direction the numbers already ran in.
-        </p>
-      </div>
-
-      <article class="criterion" id="if-1">
-        <h3><span class="num">3.1</span> Adoption lag <span class="changed">renamed</span></h3>
-        <p class="q">How long did the framework take to travel from proposal to entry into force?</p>
+      <article class="criterion" id="ef-1">
+        <h3><span class="num">3.1</span> Deliberation speed</h3>
+        <p class="q">How long do commitment procedures take, from proposal to entry into force?</p>
         <ul class="anchors">
-          <li><span class="v">0</span><span>Rapid adoption — under six months from proposal to force.</span></li>
-          <li><span class="v">50</span><span>Moderate — one to three years.</span></li>
-          <li><span class="v">100</span><span>Protracted — over five years, or indefinite delay.</span></li>
+          <li><span class="v">0</span><span>Over five years, or indefinite.</span></li>
+          <li><span class="v">50</span><span>One to three years.</span></li>
+          <li><span class="v">100</span><span>Under one year.</span></li>
         </ul>
         <p class="provenance">
-          Originally <em>“adoption speed”</em>; anchors unchanged. The anchors leave
-          two gaps — six to twelve months, and three to five years — which are
-          coded by interpolation at 25 and 75 respectively.
+          Interpolate at 25 for three to five years. The clock stops at entry into
+          force; the gap between force and obligations actually applying is
+          captured under <a href="#ef-2">3.2</a>, so the two are not double-counted.
         </p>
       </article>
 
-      <article class="criterion" id="if-2">
-        <h3><span class="num">3.2</span> Deadline unworkability <span class="changed">renamed</span></h3>
-        <p class="q">Are the compliance deadlines clear, realistic and matched to the capacity of those who must meet them?</p>
+      <article class="criterion" id="ef-2">
+        <h3><span class="num">3.2</span> Binding implementation</h3>
+        <p class="q">Do members actually have to apply it, uniformly, on the date it says?</p>
         <ul class="anchors">
-          <li><span class="v">0</span><span>Precise deadlines, adequate transition time, capacity explicitly assessed.</span></li>
-          <li><span class="v">50</span><span>Defined but tight deadlines, with some flexibility.</span></li>
-          <li><span class="v">100</span><span>No deadlines at all, or timelines that are unrealistic and unsupported.</span></li>
-        </ul>
-        <p class="provenance">
-          Originally <em>“compliance deadlines”</em>; anchors unchanged. Note that
-          the top anchor covers two different failures — the absence of deadlines
-          and the presence of impossible ones. Coders record which applies in the
-          coding notes.
-        </p>
-      </article>
-
-      <article class="criterion" id="if-3">
-        <h3><span class="num">3.3</span> Implementation support gap <span class="changed">renamed</span></h3>
-        <p class="q">Does the framework arrive with sandboxes, templates, funding and training — or on its own?</p>
-        <ul class="anchors">
-          <li><span class="v">0</span><span>Full support package: regulatory sandboxes, templates, funding, training.</span></li>
-          <li><span class="v">50</span><span>Partial support — guidance published, but no funding.</span></li>
-          <li><span class="v">100</span><span>Rules imposed with no implementation assistance whatsoever.</span></li>
-        </ul>
-        <p class="provenance">
-          Originally <em>“implementation support”</em>; anchors unchanged.
-        </p>
-      </article>
-
-      <article class="criterion" id="if-4">
-        <h3><span class="num">3.4</span> Coordination cost</h3>
-        <p class="q">How many actors must agree at each stage of implementation?</p>
-        <ul class="anchors">
-          <li><span class="v">0</span><span>A single implementing body; no veto players.</span></li>
-          <li><span class="v">50</span><span>Multiple actors, but a clear hierarchy among them.</span></li>
-          <li><span class="v">100</span><span>Full consensus required at every stage of implementation.</span></li>
+          <li><span class="v">0</span><span>No obligation to apply; adoption entirely discretionary.</span></li>
+          <li><span class="v">50</span><span>Obligation exists but requires national transposition, or is subject to broad discretion or deferral.</span></li>
+          <li><span class="v">100</span><span>Directly applicable and uniformly in force, with obligations that bite on their stated date.</span></li>
         </ul>
       </article>
 
-      <article class="criterion" id="if-5">
-        <h3><span class="num">3.5</span> Adaptive rigidity <span class="changed">renamed</span></h3>
-        <p class="q">In practice, does the framework keep pace with technical change, or does every change require reopening it?</p>
+      <article class="criterion" id="ef-3">
+        <h3><span class="num">3.3</span> Optimised coordination</h3>
+        <p class="q">Does it duplicate or contradict law the parties already have?</p>
         <ul class="anchors">
-          <li><span class="v">0</span><span>Adaptation built in; dynamic standards that move with the technology.</span></li>
-          <li><span class="v">50</span><span>Periodic updates possible, but each requires a formal process.</span></li>
-          <li><span class="v">100</span><span>Static; any change requires full re-legislation.</span></li>
+          <li><span class="v">0</span><span>Substantial duplication or contradiction with existing law, unresolved.</span></li>
+          <li><span class="v">50</span><span>Overlaps identified and partly resolved, with residual duplication.</span></li>
+          <li><span class="v">100</span><span>Cleanly demarcated from adjacent regimes; no duplicated obligations.</span></li>
         </ul>
-        <p class="provenance">
-          Originally <em>“adaptive efficiency”</em>; anchors unchanged. This indicator
-          deliberately overlaps with <a href="#en-3">2.3, rigidity of technical
-          updating</a>: 2.3 asks whether the legal <em>authority</em> to update
-          without reopening the instrument exists, while 3.5 asks whether updating
-          demonstrably <em>happens</em>. See the limitation noted below.
-        </p>
+      </article>
+
+      <article class="criterion" id="ef-4">
+        <h3><span class="num">3.4</span> Compliance verification</h3>
+        <p class="q">Is compliance monitored over the long term, and does anything follow from failing?</p>
+        <ul class="anchors">
+          <li><span class="v">0</span><span>No monitoring of any kind.</span></li>
+          <li><span class="v">50</span><span>Self-reporting or peer review, without independent verification or consequence.</span></li>
+          <li><span class="v">100</span><span>Independent verification, with registries, incident reporting and enforceable penalties.</span></li>
+        </ul>
       </article>
     </section>
 
@@ -435,56 +356,63 @@
     <section class="prose">
       <h2 id="limitations">Known limitations</h2>
 
-      <h3>Two indicators measure closely related things</h3>
+      <h3>Coding rules still to be settled</h3>
       <p>
-        <a href="#en-3">2.3</a> and <a href="#if-5">3.5</a> both concern how easily
-        a framework can be updated. We have kept both because they capture
-        different objects — legal capacity versus observed practice — but a
-        framework with no delegated updating authority will tend to score high on
-        both, which inflates the correlation between Entrenchment and
-        Implementation Friction. Readers comparing those two axes should treat the
-        relationship as partly built in rather than discovered.
+        Four questions remain open and will move scores across the whole sample:
+        whether deliberation speed is measured to entry into force or to
+        obligations actually applying; whether frameworks are coded as they stand
+        today or as originally adopted; how a row that bundles instruments is
+        scored; and whether resource concentration refers to concentration among
+        the parties or in the framework's sponsor. Until these are fixed, scores
+        are provisional in a way no anchor can fix.
       </p>
 
-      <h3>Some rows are families of instruments, not single instruments</h3>
+      <h3>One row bundles two instruments</h3>
       <p>
-        The United Nations and African Union rows each cover more than one
-        instrument, and those instruments differ sharply on exactly the properties
-        the index measures — the Malabo Convention is a binding treaty, the
-        Continental AI Strategy is not. Where a row bundles instruments, we score
-        the <strong>regime as a whole as it currently operates</strong>, and record
-        in the coding notes which instrument drove each score. This is the weakest
-        point in the current design and the most likely thing to change in
-        version 2.
+        The United Nations row covers the UNESCO Recommendation on the Ethics of
+        AI together with the Global Digital Compact. Both are non-binding, which
+        makes the bundle far more coherent than a mixed-bindingness one would be,
+        but they differ on agenda-setting and on verification. Where a row bundles
+        instruments, we score the regime as it operates and record which
+        instrument drove each score.
+      </p>
+
+      <h3>Frameworks move</h3>
+      <p>
+        The EU AI Act was substantively amended by Regulation (EU) 2026/1744, in
+        force 27 July 2026, which deferred its high-risk deadlines and expanded
+        the AI Office's powers. Any coding is a coding of a framework on a date.
+        Each score therefore carries the cut-off it was coded against.
+      </p>
+
+      <h3>Lukes' third face is not measured</h3>
+      <p>
+        The power axis captures decision-making and agenda-setting. It does not
+        capture the third dimension — the shaping of what parties come to want.
+        In AI governance that dimension is substantial: norm diffusion and
+        third-country adoption of regulatory templates are exactly this kind of
+        power, and the index currently has nowhere to record them.
       </p>
 
       <h3>The scores are expert judgements, not measurements</h3>
       <p>
-        Every score is assigned by the three authors reading primary documents
-        against the anchors above. We have not yet run inter-coder reliability
-        checks, and no framework has been scored blind. The anchors exist so that
-        a reader who disagrees can say exactly which anchor we applied wrongly.
-      </p>
-
-      <h3>Equal weighting is an assumption, not a finding</h3>
-      <p>
-        Averaging five indicators equally implies each contributes equally to the
-        axis. Nothing in the underlying literature establishes that. We use equal
-        weights because they are transparent and because any alternative would
-        need a justification we cannot yet give.
+        Every score is assigned by reading primary documents against the anchors
+        above. We have not yet run inter-coder reliability checks, and no
+        framework has been coded blind. The anchors exist so that a reader who
+        disagrees can say exactly which anchor we applied wrongly.
       </p>
     </section>
 
     <section class="prose">
       <h2 id="changes">Version history</h2>
       <div class="note">
-        <span class="label">Version 1.0 · <span data-year>2026</span></span>
+        <span class="label">Version 2.0 · September 2026</span>
         <p>
-          First published version. Axis 2 renamed from Reversibility to
-          Entrenchment with three indicators inverted; axis 3 renamed from
-          Efficiency to Implementation Friction with three indicators renamed;
-          one indicator in axis 1 renamed. Anchors otherwise as originally
-          drafted.
+          Index restructured from fifteen indicators to twelve features, four per
+          axis. Power concentration rebuilt around the faces of power plus
+          material and technical resources. Reversibility and efficiency restored
+          as axis names, with 2.2 and 2.4 reverse-coded so that all four features
+          in the reversibility axis count in the same direction.
         </p>
       </div>
     </section>
@@ -496,7 +424,7 @@
   <div class="wrap">
     <div>
       <p>
-        AI Governance Design Index, version 1.0. Text and data licensed
+        AI Governance Design Index, version 2.0. Text and data licensed
         <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">CC&nbsp;BY&nbsp;4.0</a>;
         site code licensed MIT.
       </p>

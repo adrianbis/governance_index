@@ -2,8 +2,11 @@
 
 A three-page static site publishing an index that scores international AI
 governance frameworks on how they are built: how much power they concentrate,
-how entrenched their rules are, and how much friction they create in
-implementation.
+how reversible their commitments are, and how efficiently they translate
+decisions into implementation.
+
+The measurement guide and the current pilot coding live in
+`INDEX-v2-anchors-and-pilot-coding.md`.
 
 **Getting it online for the first time:** follow [SETUP.md](SETUP.md).
 **Changing it afterwards:** this file.
@@ -14,7 +17,7 @@ implementation.
 
 ```
 index.html          The About page — project summary and the three authors
-rubric.html         The index — three axes, fifteen indicators, all anchors
+rubric.html         The index — three axes, twelve features, all anchors
 frameworks.html     The scores — framework list, matrix, figures
 404.html            Shown if someone follows a broken link
 
@@ -24,7 +27,7 @@ assets/
   img/              Portraits, figures, favicon, social sharing card
 
 tools/
-  make-figures.py   Regenerates the two charts (optional — see below)
+  make-figures.py   Regenerates the charts (optional — see below)
 
 LICENSE             MIT — covers the website code
 LICENSE-CONTENT.md  CC BY 4.0 — covers the index, scores and text
@@ -42,7 +45,7 @@ you commit it.
 2. Click the file you want to change.
 3. Click the **pencil icon** (top right of the file).
 4. Edit.
-5. Scroll down, write a short note in the commit box (e.g. `Update x
+5. Scroll down, write a short note in the commit box (e.g. `Update Camilla's
    bio`), click **Commit changes**.
 6. Wait about thirty seconds and refresh the live site.
 
@@ -65,21 +68,37 @@ that's what a screen reader announces.
 
 ### 2. A score — `frameworks.html`
 
-Find the table under the heading **The full matrix**. Each score looks like this:
+Find the table under the heading **The full matrix**. A blank cell looks like
+this:
 
 ```html
-<td class="score" data-fw="eu" data-score="75">75</td>
+<td class="score" data-fw="oecd">&mdash;</td>
 ```
 
-**Change both numbers** — the one in `data-score="75"` and the one between the
+To enter a score, add the `data-score` attribute and replace the dash:
+
+```html
+<td class="score" data-fw="oecd" data-score="25">25</td>
+```
+
+**Change both numbers** — the one in `data-score="25"` and the one between the
 tags. They must match.
+
+Two rows (2.2 Amendment difficulty and 2.4 Path dependency) carry
+`data-reverse="true"`. Enter the **raw** score there; the page inverts it for you
+when it works out the axis average. Show the inverted value beside it:
+
+```html
+<td class="score" data-fw="eu" data-score="40">40<span class="inv">&rarr;60</span></td>
+```
 
 You never need to update an axis average. The page recalculates every average
 from the individual scores each time it loads, so the averages and the summary
 cards at the top can't drift out of step with the numbers you edited.
 
-When the real scores go in, **delete the yellow placeholder notice** at the top
-of `frameworks.html` — the block that starts `<div class="notice"`.
+When all five frameworks are coded and the three of you have signed off,
+**delete the yellow notice** at the top of `frameworks.html` — the block that
+starts `<div class="notice"`.
 
 ### 3. Wording anywhere
 
@@ -100,9 +119,10 @@ Four edits in `frameworks.html`, all copy-and-paste:
    (lowercase, no spaces, e.g. `uk`).
 3. **Table header** — add one `<th scope="col">Your Framework</th>` at the end of
    the header row.
-4. **Table body** — add one `<td class="score" data-fw="uk" data-score="50">50</td>`
+4. **Table body** — add one `<td class="score" data-fw="uk">&mdash;</td>`
    at the end of **every** row in the table, including the three average rows.
-   The `data-fw` code must match the one you used in step 2.
+   The `data-fw` code must match the one you used in step 2. Fill in scores as
+   you code them.
 
 Then regenerate the figures (below), or replace them with your own images.
 
@@ -124,13 +144,17 @@ Then regenerate the figures (below), or replace them with your own images.
 
 ## Regenerating the figures
 
-The two charts on the scores page are generated from a copy of the scores held
-in `tools/make-figures.py`. If you change scores in the table, update the
-`SCORES` block in that file to match, then run:
+The chart on the scores page is generated from a copy of the scores held in
+`tools/make-figures.py`. If you change scores in the table, update the `SCORES`
+block in that file to match, then run:
 
 ```
 python3 tools/make-figures.py
 ```
+
+Use `n` (not-a-number) for any framework you have not coded yet. Once two or
+more frameworks have scores, the script automatically starts producing the
+side-by-side comparison chart and the heatmap as well.
 
 This needs Python and matplotlib on your own machine. If that's a hurdle, just
 make the charts however you normally would, save them into `assets/img/` under
@@ -160,4 +184,5 @@ The site follows the reader's system light/dark setting automatically.
 - **Index, scores, figures and text:** CC BY 4.0 — see [LICENSE-CONTENT.md](LICENSE-CONTENT.md)
 - **Site code:** MIT — see [LICENSE](LICENSE)
 
-
+Before publishing, agree copyright and authorship order between the three
+authors in writing. See the note at the end of `LICENSE-CONTENT.md`.
