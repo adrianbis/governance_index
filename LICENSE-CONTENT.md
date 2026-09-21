@@ -19,7 +19,7 @@ restrictions that stop others doing the same. We give no warranty.
 **How we would like to be credited:**
 
 > Balbis, C., Sheikh, P. and Vincendeau, J. M. (2026). *AI Governance Design
-> Index*, version 2.0. Licensed CC BY 4.0. https://example.org/
+> Index*, version 2.0. Licensed CC BY 4.0. 
 
 ## The website code — MIT
 
