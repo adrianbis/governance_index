@@ -33,7 +33,7 @@ PAPER, INK, INK_SOFT, INK_FAINT, RULE = "#FBFAF7", "#17171B", "#55555F", "#86868
 AXIS = ["#2F4B7C", "#9A4636", "#6A7A38"]
 AXIS_NAMES = ["Power concentration", "Reversibility", "Efficiency"]
 
-FRAMEWORKS = ["OECD\nPrinciples", "EU AI Act", "UNESCO\n& GDC",
+FRAMEWORKS = ["OECD\nPrinciples", "EU AI Act", "UNESCO\nRec.",
               "AU\nStrategy", "ASEAN\nGuide"]
 
 # (label, axis index, reverse-coded?)
@@ -62,13 +62,13 @@ SCORES = np.array([
     [n, 70, n, n, n],
     [n, 80, n, n, n],
     [n,  0, n, n, n],
-    [n, 40, n, n, n],   # reverse-coded
+    [n, 45, n, n, n],   # reverse-coded
     [n, 50, n, n, n],
-    [n, 85, n, n, n],   # reverse-coded
-    [n, 40, n, n, n],
-    [n, 65, n, n, n],
+    [n, 90, n, n, n],   # reverse-coded
     [n, 45, n, n, n],
-    [n, 85, n, n, n],
+    [n, 75, n, n, n],
+    [n, 50, n, n, n],
+    [n, 70, n, n, n],
 ], dtype=float)
 
 plt.rcParams.update({
@@ -161,7 +161,7 @@ def figure_profile(col=1, filename="figure-eu-profile.png"):
     ax.tick_params(length=0)
 
     title = FRAMEWORKS[col].replace("\n", " ")
-    ax.set_title(f"{title}: the twelve features", fontsize=12.5, loc="left", pad=26)
+    ax.set_title(f"{title} (as adopted): the twelve features", fontsize=12.5, loc="left", pad=26)
     ax.text(0, 1.035,
             "Reverse-coded features (2.2, 2.4) are shown as they enter the average, "
             "with the raw score in brackets.",
