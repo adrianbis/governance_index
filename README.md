@@ -5,8 +5,8 @@ governance frameworks on how they are built: how much power they concentrate,
 how reversible their commitments are, and how efficiently they translate
 decisions into implementation.
 
-The measurement guide and the current pilot coding live in
-`INDEX-v2-anchors-and-pilot-coding.md`.
+The measurement guide and the full coding, with a source for every cell, live in
+`INDEX-v2-anchors-and-coding.md`.
 
 **Getting it online for the first time:** follow [SETUP.md](SETUP.md).
 **Changing it afterwards:** this file.

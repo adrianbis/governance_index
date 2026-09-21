@@ -17,6 +17,7 @@ Outputs into assets/img/ :
     social-card.png
 """
 
+import math
 import os
 import numpy as np
 import matplotlib
@@ -57,18 +58,19 @@ FEATURES = [
 # KEEP THIS IN STEP WITH THE TABLE IN frameworks.html.
 n = np.nan
 SCORES = np.array([
-    [n, 75, n, n, n],
-    [n, 90, n, n, n],
-    [n, 70, n, n, n],
-    [n, 80, n, n, n],
-    [n,  0, n, n, n],
-    [n, 45, n, n, n],   # reverse-coded
-    [n, 50, n, n, n],
-    [n, 90, n, n, n],   # reverse-coded
-    [n, 45, n, n, n],
-    [n, 75, n, n, n],
-    [n, 50, n, n, n],
-    [n, 70, n, n, n],
+    # OECD,  EU,  UNESCO,  AU,  ASEAN
+    [   15,  75,   30,     20,    5],   # 1.1 Decision-making concentration
+    [   45,  90,   60,     55,   30],   # 1.2 Agenda-setting concentration
+    [   35,  70,   35,     45,   20],   # 1.3 Resource concentration
+    [   55,  80,   70,     45,   40],   # 1.4 Technical concentration
+    [  100,   0,   95,    100,  100],   # 2.1 Exit possibility
+    [   60,  45,   30,     35,   40],   # 2.2 Amendment difficulty   [reverse-coded]
+    [   50,  50,   55,     65,   35],   # 2.3 Sunset mechanisms
+    [   30,  90,   40,     25,   15],   # 2.4 Path dependency        [reverse-coded]
+    [   80,  45,   50,     65,   75],   # 3.1 Deliberation speed
+    [   10,  75,   15,      5,    0],   # 3.2 Binding implementation
+    [   80,  50,   45,     70,   75],   # 3.3 Optimised coordination
+    [   40,  70,   50,     25,    5],   # 3.4 Compliance verification
 ], dtype=float)
 
 plt.rcParams.update({
@@ -86,6 +88,18 @@ def contributions():
         if rev:
             out[i] = 100.0 - out[i]
     return out
+
+
+def js_round(x):
+    """Match JavaScript's Math.round (half-up), which is what the webpage uses.
+
+    Python's built-in round() is half-to-even: round(52.5) == 52, while
+    Math.round(52.5) === 53. With four features per axis, means land on exact
+    .5 values often enough that this matters — and a figure disagreeing with
+    the table by one point is exactly the kind of mismatch that costs a reader
+    their trust. Every rounded score in this file goes through here.
+    """
+    return math.floor(x + 0.5) if not math.isnan(x) else x
 
 
 def axis_means():
@@ -132,7 +146,7 @@ def figure_profile(col=1, filename="figure-eu-profile.png"):
         is_mean = note == "MEAN"
         ax.barh(yi, v, height=0.62 if is_mean else 0.5, color=colour,
                 alpha=1.0 if is_mean else 0.55, zorder=3)
-        label = f"{v:.0f}"
+        label = f"{js_round(v):.0f}"
         ax.text(v + 1.5, yi, label, va="center", fontsize=8.5,
                 fontweight="bold" if is_mean else "normal",
                 color=INK if is_mean else INK_SOFT)
@@ -185,7 +199,8 @@ def figure_axis_comparison():
     for i in range(3):
         bars = ax.bar(x + (i - 1) * width, means[i], width, label=AXIS_NAMES[i],
                       color=AXIS[i], edgecolor="none", zorder=3)
-        ax.bar_label(bars, fmt="%.0f", padding=3, fontsize=8, color=INK_SOFT)
+        ax.bar_label(bars, labels=[f"{js_round(v):.0f}" for v in means[i]],
+                     padding=3, fontsize=8, color=INK_SOFT)
 
     ax.set_xticks(x); ax.set_xticklabels(names, fontsize=9.5)
     ax.set_ylim(0, 108); ax.set_yticks([0, 25, 50, 75, 100])
@@ -222,7 +237,11 @@ def figure_heatmap():
     ax.set_xticklabels(names, fontsize=9, rotation=22, ha="left")
     ax.xaxis.set_ticks_position("top")
     ax.set_yticks(np.arange(len(FEATURES)))
-    ax.set_yticklabels([f[0] for f in FEATURES], fontsize=8.5)
+    # The heatmap plots contributions, so the two reverse-coded rows show
+    # inverted values. Mark them, or a reader compares them to the raw scores
+    # in the table and concludes the figure is wrong.
+    ax.set_yticklabels([f"{f[0]} (inv.)" if f[2] else f[0] for f in FEATURES],
+                       fontsize=8.5)
     for i, (_, ax_i, _) in enumerate(FEATURES):
         ax.get_yticklabels()[i].set_color(AXIS[ax_i])
 
@@ -231,7 +250,7 @@ def figure_heatmap():
             v = data[i, j]
             if np.isnan(v):
                 continue
-            ax.text(j, i, f"{v:.0f}", ha="center", va="center", fontsize=8.5,
+            ax.text(j, i, f"{js_round(v):.0f}", ha="center", va="center", fontsize=8.5,
                     color="#FFFFFF" if v >= 55 else INK_SOFT)
 
     ax.set_xticks(np.arange(-0.5, len(names), 1), minor=True)
@@ -276,9 +295,12 @@ def social_card():
 
 if __name__ == "__main__":
     cols = coded_columns()
-    for j in cols:
-        figure_profile(j, "figure-eu-profile.png" if j == 1
-                          else f"figure-profile-{j}.png")
+    # Only the EU profile is used on the page. To get a single-framework chart
+    # for another one, change PROFILE_COLUMN to its position in FRAMEWORKS
+    # (0 = OECD, 1 = EU, 2 = UNESCO, 3 = AU, 4 = ASEAN) and re-run.
+    PROFILE_COLUMN = 1
+    if PROFILE_COLUMN in cols:
+        figure_profile(PROFILE_COLUMN, "figure-eu-profile.png")
     made_comparison = figure_axis_comparison()
     made_heatmap = figure_heatmap()
     social_card()
@@ -288,7 +310,7 @@ if __name__ == "__main__":
     print("Axis averages (rounded), columns in framework order:")
     for name, row in zip(AXIS_NAMES, means):
         print(f"  {name:22s} "
-              f"{['—' if np.isnan(v) else round(v) for v in row]}")
+              f"{['—' if np.isnan(v) else js_round(v) for v in row]}")
     print(f"Comparison chart: {'written' if made_comparison else 'skipped (needs 2+ frameworks)'}")
     print(f"Heatmap:          {'written' if made_heatmap else 'skipped (needs 2+ frameworks)'}")
     print("Figures written to assets/img/")
