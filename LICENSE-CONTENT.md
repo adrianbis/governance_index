@@ -44,7 +44,4 @@ names, likenesses or biographical text.
 
 Copyright in the content is held jointly by Camilla Balbis, Parveen Sheikh and Jeanne MJ Vincendeau, 2026.
 
-> **Before publishing, agree this between the three of you in writing** — even an
-> email exchange is enough. Joint copyright means each of you needs the others'
-> agreement to relicense the work later, and the moment to settle that is now,
-> not when someone wants to reuse it.
+
