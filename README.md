@@ -19,6 +19,7 @@ The measurement guide and the full coding, with a source for every cell, live in
 index.html          The About page — project summary and the three authors
 rubric.html         The index — three axes, twelve features, all anchors
 frameworks.html     The scores — framework list, matrix, figures
+methodology.html    Known limitations, version history, corrections log
 404.html            Shown if someone follows a broken link
 
 assets/
@@ -62,9 +63,12 @@ Find the block that starts `<li class="person">`. Each author has one. Change
 the name, the role line, the bio paragraph and the LinkedIn URL.
 
 For a photo: upload a square image (JPG or PNG, at least 300 × 300 pixels) into
-`assets/img/`, then change the `src="assets/img/person-1.svg"` to your file
-name. The site crops it into a circle for you. Keep the `alt` text accurate —
-that's what a screen reader announces.
+`assets/img/`, then change the `src="assets/img/camilla-balbis.jpg"` to your
+file name. The site crops it into a circle for you. Keep the `alt` text accurate
+— that's what a screen reader announces.
+
+The three current photos are already cropped square and centred on the face at
+512 × 512. If you swap one, crop it square first or the circle will cut oddly.
 
 ### 2. A score — `frameworks.html`
 
@@ -136,9 +140,10 @@ Then regenerate the figures (below), or replace them with your own images.
 4. Paste, then replace the middle section — everything between `<main id="main">`
    and `</main>` — with your content.
 5. Change the `<title>` and the `<meta name="description">` at the top.
-6. Add a link to it in the navigation. The navigation appears in **all four**
+6. Add a link to it in the navigation. The navigation appears in **all five**
    HTML files — add the same line to each, or the new page will only be
-   reachable from one place.
+   reachable from one place. There are two navs per page: the main one in the
+   header and a second in the footer.
 
 ---
 

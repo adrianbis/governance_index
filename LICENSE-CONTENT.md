@@ -18,8 +18,8 @@ restrictions that stop others doing the same. We give no warranty.
 
 **How we would like to be credited:**
 
-> Balbis, C., [Second Author] and [Third Author] (2026). *AI Governance Design
-> Index*, version 1.0. Licensed CC BY 4.0. https://example.org/
+> Balbis, C., Sheikh, P. and Vincendeau, J. M. (2026). *AI Governance Design
+> Index*, version 2.0. Licensed CC BY 4.0. https://example.org/
 
 ## The website code — MIT
 
@@ -37,10 +37,12 @@ grants any right over them.
 Portrait photographs of the authors are excluded from the CC BY licence and
 remain All Rights Reserved to each author unless stated otherwise.
 
+Nothing in these licences affects the authors' moral rights in their own
+names, likenesses or biographical text.
+
 ## Copyright holders
 
-Copyright in the content is held jointly by Camilla Balbis, [Second Author] and
-[Third Author], 2026.
+Copyright in the content is held jointly by Camilla Balbis, Parveen Sheikh and Jeanne MJ Vincendeau, 2026.
 
 > **Before publishing, agree this between the three of you in writing** — even an
 > email exchange is enough. Joint copyright means each of you needs the others'
