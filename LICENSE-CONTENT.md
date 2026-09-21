@@ -42,6 +42,6 @@ names, likenesses or biographical text.
 
 ## Copyright holders
 
-Copyright in the content is held jointly by Camilla Balbis, Parveen Sheikh and Jeanne MJ Vincendeau, 2026.
+Copyright in the content is held by Camilla Balbis 2026.
 
 
