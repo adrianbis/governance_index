@@ -191,7 +191,7 @@ says so under the map. On the live site that never happens.
 
 ## Changing the look
 
-Open `assets/style.css`. The first forty lines are a list of colours, fonts and
+Open `assets/style.css`. The first seventy lines are a list of colours, fonts and
 widths. Change a value there and it changes everywhere consistently. You should
 not need to read past that block.
 
@@ -199,7 +199,12 @@ The three axis colours — `--axis-1`, `--axis-2`, `--axis-3` — are used in th
 navigation mark, the rubric page, the table, the summary cards and the figures.
 If you change them here, change them in `tools/make-figures.py` too.
 
-The site follows the reader's system light/dark setting automatically.
+The site is light only, on purpose: it no longer switches to a dark theme when
+a reader's computer is in dark mode. The light-blue band colour is `--band`,
+the page is `--page`, and cards and tables are `--paper`. The fonts are
+Instrument Serif (big page titles), Newsreader (card titles and the site
+name), Instrument Sans (text and section headings) and Inter (tables and numbers), loaded by the Google Fonts
+line near the top of every HTML page.
 
 ---
 

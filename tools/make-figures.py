@@ -30,7 +30,8 @@ OUT = os.path.join(HERE, "..", "assets", "img")
 os.makedirs(OUT, exist_ok=True)
 
 # --- Palette, matching assets/style.css -------------------------------------
-PAPER, INK, INK_SOFT, INK_FAINT, RULE = "#FBFAF7", "#17171B", "#55555F", "#86868F", "#E2DFD6"
+PAPER, INK, INK_SOFT, INK_FAINT, RULE = "#FFFFFF", "#17161A", "#3E4555", "#697285", "#CADCF0"
+BAND = "#E8F1FB"   # light-blue band colour, used for the social card
 AXIS = ["#2F4B7C", "#9A4636", "#6A7A38"]
 AXIS_NAMES = ["Power concentration", "Reversibility", "Efficiency"]
 
@@ -74,7 +75,8 @@ SCORES = np.array([
 ], dtype=float)
 
 plt.rcParams.update({
-    "font.family": "DejaVu Sans",
+    # Fonts match the site. If they are not installed, Inter or DejaVu Sans is used instead.
+    "font.family": "sans-serif", "font.sans-serif": ["Instrument Sans", "Inter", "DejaVu Sans"],
     "figure.facecolor": PAPER, "axes.facecolor": PAPER, "savefig.facecolor": PAPER,
     "text.color": INK, "axes.labelcolor": INK_SOFT,
     "xtick.color": INK_SOFT, "ytick.color": INK_SOFT,
@@ -230,7 +232,7 @@ def figure_heatmap():
     names = [FRAMEWORKS[j].replace("\n", " ") for j in cols]
 
     fig, ax = plt.subplots(figsize=(9, 6.2), dpi=200)
-    cmap = LinearSegmentedColormap.from_list("ink", [PAPER, "#C9CFD8", "#5B6B84", "#22303F"])
+    cmap = LinearSegmentedColormap.from_list("ink", [PAPER, "#C9DBF2", "#4F6FA6", "#14284A"])
     im = ax.imshow(data, cmap=cmap, vmin=0, vmax=100, aspect="auto")
 
     ax.set_xticks(np.arange(len(names)))
@@ -278,18 +280,19 @@ def figure_heatmap():
 # --- Social sharing card -----------------------------------------------------
 def social_card():
     fig = plt.figure(figsize=(6, 3.15), dpi=200)
-    fig.patch.set_facecolor(PAPER)
+    fig.patch.set_facecolor(BAND)
     for i, w in enumerate([0.62, 0.42, 0.24]):
         fig.add_artist(plt.Rectangle((0.075, 0.735 - i * 0.062), w * 0.5, 0.038,
                                      facecolor=AXIS[i], edgecolor="none",
                                      transform=fig.transFigure))
-    fig.text(0.075, 0.44, "AI Governance\nDesign Index", fontsize=27, color=INK,
-             linespacing=1.15, va="center", weight="medium")
+    fig.text(0.075, 0.44, "AI Governance\nDesign Index", fontsize=31, color=INK,
+             linespacing=1.05, va="center",
+             fontfamily=["Instrument Serif", "DejaVu Serif"])
     fig.text(0.075, 0.16,
              "How international AI frameworks concentrate power,\n"
              "how reversible they are, and how efficiently they work.",
              fontsize=10.5, color=INK_SOFT, linespacing=1.5, va="center")
-    fig.savefig(os.path.join(OUT, "social-card.png"), facecolor=PAPER)
+    fig.savefig(os.path.join(OUT, "social-card.png"), facecolor=BAND)
     plt.close(fig)
 
 

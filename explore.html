@@ -18,7 +18,7 @@
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Source+Serif+4:opsz,wght@8..60,400..650&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Instrument+Serif:ital@0;1&family=Newsreader:opsz,wght@6..72,400..500&family=Inter:wght@400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 
 <!-- ==========================================================================
@@ -29,7 +29,7 @@
 .space { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 1.25rem; align-items: start; margin: 0; }
 @media (max-width: 880px) { .space { grid-template-columns: 1fr; } }
 
-.space-stage { position: relative; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); overflow: hidden; }
+.space-stage { position: relative; border-radius: var(--radius, 4px); background: var(--paper); box-shadow: var(--shadow, 0 0 0 1px var(--rule)); overflow: hidden; }
 .space-toolbar { display: flex; flex-wrap: wrap; gap: .4rem; padding: .6rem; border-bottom: 1px solid var(--rule-soft); background: var(--paper-2); }
 .space-toolbar .sep { flex: 1; }
 .space button {
@@ -61,7 +61,7 @@
 .space-tip.show { opacity: 1; }
 .space-loading { position: absolute; inset: 3.2rem 0 0; display: grid; place-items: center; font-family: var(--sans); font-size: .85rem; color: var(--ink-faint); }
 
-.space-panel { font-family: var(--sans); border: 1px solid var(--rule); border-radius: 4px; padding: 1rem 1.05rem; background: var(--paper); }
+.space-panel { font-family: var(--sans); border-radius: var(--radius, 4px); box-shadow: var(--shadow, 0 0 0 1px var(--rule)); padding: 1.2rem 1.25rem; background: var(--paper); }
 .space-panel > .label { display: block; margin-bottom: .55rem; }
 .space-legend { list-style: none; margin: 0 0 1rem; padding: 0; }
 .space-legend li { display: flex; align-items: center; gap: .5rem; padding: .12rem 0; }

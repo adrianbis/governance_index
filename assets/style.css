@@ -1,64 +1,65 @@
 /* ==========================================================================
    AI Governance Design Index — stylesheet
    --------------------------------------------------------------------------
-   You almost never need to edit this file. Colours, spacing and type are all
-   set by the variables in the :root block just below, so if you want to
-   change the look, change a value there rather than hunting through the file.
+   You almost never need to edit this file. Colours, type and lines are set by
+   the variables in the :root block just below, so if you want to change the
+   look, change a value there rather than hunting through the file.
+
+   The site is light only, on purpose: it does not switch to a dark theme when
+   a reader's computer is in dark mode.
+
+   Nothing in this file affects the numbers. The score table, the summary
+   cards and the 3D map read their data from the HTML, not from here.
    ========================================================================== */
 
 :root {
-  /* --- Colour: light mode ------------------------------------------------ */
-  --paper:      #FBFAF7;   /* page background        */
-  --paper-2:    #F4F2EC;   /* cards, table stripes   */
-  --ink:        #17171B;   /* main text              */
-  --ink-soft:   #55555F;   /* secondary text         */
-  --ink-faint:  #86868F;   /* captions, meta         */
-  --rule:       #E2DFD6;   /* hairlines              */
-  --rule-soft:  #EDEAE2;
-  --accent:     #1E5F55;   /* links, focus ring      */
+  /* --- Colour ------------------------------------------------------------ */
+  --band:       #E8F1FB;   /* header and page-title band (light blue)  */
+  --page:       #F8FBFE;   /* page background                          */
+  --paper:      #FFFFFF;   /* cards, tables, panels                    */
+  --paper-2:    #F0F6FD;   /* tinted areas inside cards, table heads   */
+  --ink:        #17161A;   /* main text                                */
+  --ink-soft:   #3E4555;   /* secondary text                           */
+  --ink-faint:  #697285;   /* captions, meta                           */
+  --rule:       #CADCF0;   /* hairlines and card borders               */
+  --rule-soft:  #E1EBF7;
+  --accent:     #1F4FA8;   /* titles on inner pages, labels, links     */
+  --accent-soft:#DDEAFB;   /* pill buttons                             */
+  --peach:      #FBF1E6;   /* warm glow at the foot of the home band   */
+  --dot:        rgba(31, 79, 168, .16);  /* dot grid in the band        */
 
-  /* Axis colours. Used for the three index axes, consistently, everywhere. */
-  --axis-1:     #2F4B7C;   /* Power Concentration    */
-  --axis-2:     #9A4636;   /* Entrenchment           */
-  --axis-3:     #6A7A38;   /* Implementation Friction*/
-  --axis-1-bg:  #2f4b7c22;
-  --axis-2-bg:  #9a463622;
-  --axis-3-bg:  #6a7a3822;
+  /* Axis colours. Used for the three index axes, consistently, everywhere.
+     If you change these, change AXIS in tools/make-figures.py too. */
+  --axis-1:     #2F4B7C;   /* Power concentration */
+  --axis-2:     #9A4636;   /* Reversibility       */
+  --axis-3:     #6A7A38;   /* Efficiency          */
+  --axis-1-bg:  #2f4b7c1c;
+  --axis-2-bg:  #9a46361c;
+  --axis-3-bg:  #6a7a381c;
 
-  --flag:       #8A5A00;   /* provisional / caution  */
-  --flag-bg:    #FDF4E0;
-  --flag-rule:  #E9D5A8;
+  --flag:       #8A5A00;   /* provisional / caution */
+  --flag-bg:    #FFF6E2;
+  --flag-rule:  #F0DDB0;
 
   /* --- Type -------------------------------------------------------------- */
-  --serif: "Source Serif 4", "Iowan Old Style", Georgia, "Times New Roman", serif;
-  --sans:  "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --display: "Instrument Serif", "Iowan Old Style", Georgia, "Times New Roman", serif;  /* big page titles */
+  --title:   "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;        /* card titles, site name */
+  --sans:    "Instrument Sans", "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;  /* text, section headings */
+  --data:    "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;  /* tables and numbers */
+  --serif:   var(--display);  /* kept so older markup that asks for it still works */
+
+  /* --- Shape ------------------------------------------------------------- */
+  /* Square corners and hairline borders. The 3D map page reads these two. */
+  --radius:  0px;
+  --shadow:  0 0 0 1px var(--rule);
 
   /* --- Layout ------------------------------------------------------------ */
   --measure: 68ch;   /* comfortable reading width */
-  --wide:    1120px; /* width for tables and figures */
+  --wide:    1180px; /* width for tables and figures */
   --gutter:  clamp(1.25rem, 5vw, 3rem);
-}
+  --main-top: clamp(2.5rem, 6vw, 4.5rem);
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper:     #131317;
-    --paper-2:   #1C1C22;
-    --ink:       #ECEBE6;
-    --ink-soft:  #ABABB4;
-    --ink-faint: #83838D;
-    --rule:      #2E2E36;
-    --rule-soft: #24242B;
-    --accent:    #6FBFAE;
-    --axis-1:    #8AA8DA;
-    --axis-2:    #DE9382;
-    --axis-3:    #B7C77C;
-    --axis-1-bg: #8aa8da26;
-    --axis-2-bg: #de938226;
-    --axis-3-bg: #b7c77c26;
-    --flag:      #E7BE6A;
-    --flag-bg:   #241E10;
-    --flag-rule: #4A3C1C;
-  }
+  color-scheme: light;
 }
 
 /* ==========================================================================
@@ -67,48 +68,58 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; background: var(--page); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--page);
   color: var(--ink);
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: 1.0625rem;
   line-height: 1.65;
+  overflow-x: clip;
   font-synthesis-weight: none;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; line-height: 1.2; margin: 0 0 .5em; letter-spacing: -0.011em; }
-h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.1rem); letter-spacing: -0.02em; }
-h2 { font-size: clamp(1.4rem, 1.15rem + 1.1vw, 1.9rem); margin-top: 2.6em; }
-h3 { font-size: 1.16rem; margin-top: 2em; }
+/* Section headings: plain sans, regular weight, large. */
+h1, h2, h3, h4 { margin: 0 0 .5em; color: var(--ink); }
+h2, h4 { font-family: var(--sans); font-weight: 400; line-height: 1.18; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.75rem, 1.25rem + 1.6vw, 2.5rem); margin-top: 2.2em; }
+/* Big titles and card titles: the serif. */
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2.8rem, 1.6rem + 4.6vw, 5.2rem); line-height: 1.02; letter-spacing: -0.02em; }
+h3 { font-family: var(--title); font-weight: 400; font-size: 1.45rem; line-height: 1.22; letter-spacing: -0.012em; margin-top: 1.7em; }
 h2:first-child, h3:first-child { margin-top: 0; }
 
 p { margin: 0 0 1.1em; }
 p:last-child { margin-bottom: 0; }
 
-a { color: inherit; text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
-a:hover { color: var(--accent); }
+a {
+  color: inherit; text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-underline-offset: 0.2em; text-decoration-thickness: 1px;
+  transition: color .15s, text-decoration-color .15s, background-color .15s;
+}
+a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 a:focus-visible, button:focus-visible, summary:focus-visible {
   outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px;
 }
 
-strong { font-weight: 650; }
+strong { font-weight: 600; }
+em { font-style: italic; }
 hr { border: 0; border-top: 1px solid var(--rule); margin: 3rem 0; }
 
-::selection { background: var(--axis-1-bg); }
+::selection { background: var(--accent-soft); }
 
-/* Small-caps label used above sections and in metadata */
+/* Small label used above sections and in metadata */
 .label {
   font-family: var(--sans);
-  font-size: .688rem;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
+  font-size: .8rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--accent);
 }
 
 .skip-link {
@@ -126,57 +137,130 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 3rem 0; }
 .prose { max-width: var(--measure); }
 .prose-wide { max-width: 82ch; }
 
-main { padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(4rem, 9vw, 7rem); }
+main { padding-block: var(--main-top) clamp(4rem, 9vw, 7rem); }
 
-/* Space between consecutive top-level sections. Section headings reset their
-   own top margin (h2:first-child), so the gap belongs to the section. */
+/* Space between top-level sections, with a hairline between them. */
 main section + section,
 main nav + section,
-main section + nav { margin-top: clamp(3rem, 6.5vw, 5rem); }
+main section + nav {
+  margin-top: clamp(3rem, 6.5vw, 5rem);
+}
+main .wrap > section + section:not(.axis) {
+  border-top: 1px solid var(--rule); padding-top: clamp(2.5rem, 5vw, 4rem);
+}
 
 /* ==========================================================================
    Header / navigation
    ========================================================================== */
 
 .site-header {
+  background: color-mix(in srgb, var(--band) 92%, transparent);
+  backdrop-filter: saturate(1.3) blur(10px);
+  -webkit-backdrop-filter: saturate(1.3) blur(10px);
   border-bottom: 1px solid var(--rule);
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter: saturate(1.6) blur(8px);
   position: sticky; top: 0; z-index: 50;
 }
 .site-header .wrap {
   display: flex; align-items: center; gap: 1.5rem;
-  min-height: 68px; flex-wrap: wrap;
+  min-height: 76px; flex-wrap: wrap;
 }
 .brand {
-  font-family: var(--serif); font-weight: 600; font-size: 1.02rem;
-  text-decoration: none; letter-spacing: -0.01em; line-height: 1.25;
-  display: flex; align-items: center; gap: .6rem; margin-right: auto;
+  font-family: var(--title); font-weight: 400; font-size: 1.5rem;
+  text-decoration: none; letter-spacing: -0.02em; line-height: 1.1;
+  display: flex; align-items: center; gap: .6rem; margin-right: auto; color: var(--ink);
 }
-.brand:hover { color: inherit; }
+.brand:hover { color: var(--ink); }
 .brand .mark { flex: none; }
-.brand .mark svg { display: block; }
+.brand .mark svg { display: block; width: 22px; height: 22px; }
 
-.site-nav { display: flex; gap: 1.35rem; font-family: var(--sans); font-size: .875rem; }
-.site-nav a {
-  text-decoration: none; color: var(--ink-soft); padding: .25rem 0;
-  border-bottom: 1.5px solid transparent;
+.site-nav { display: flex; align-items: center; gap: .3rem 1.9rem; font-family: var(--sans); font-size: .95rem; flex-wrap: wrap; }
+.site-nav a { text-decoration: none; color: var(--ink); padding: .3rem 0; }
+.site-nav a:hover { color: var(--accent); }
+.site-nav a[aria-current="page"] { color: var(--accent); text-decoration: underline; text-underline-offset: .45em; text-decoration-thickness: 1px; }
+/* The last menu item is shown as a white pill, like a call to action. */
+.site-nav a:last-child {
+  background: var(--paper); color: var(--accent);
+  border-radius: 999px; padding: .5rem 1.1rem; text-decoration: none;
 }
-.site-nav a:hover { color: var(--ink); }
-.site-nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 550; }
+.site-nav a:last-child:hover { background: var(--accent-soft); }
+.site-nav a:last-child[aria-current="page"] { background: var(--accent); color: var(--paper); }
 
 /* ==========================================================================
-   Page opener
+   Page opener — the tinted band at the top of every page
    ========================================================================== */
 
-.opener { margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
-.opener .label { display: block; margin-bottom: .9rem; }
-.opener h1 { margin-bottom: .45em; max-width: 20ch; }
-.lede {
-  font-size: clamp(1.1rem, 1.02rem + .35vw, 1.28rem);
-  line-height: 1.55; color: var(--ink-soft); max-width: 56ch; margin: 0;
+.opener.prose, .opener.prose-wide { max-width: none; }
+.opener {
+  position: relative; isolation: isolate;
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: clamp(3rem, 6vw, 4.5rem);
 }
-.opener-rule { border: 0; border-top: 1px solid var(--rule); margin: clamp(2rem, 4vw, 3rem) 0 0; }
+.opener::before {
+  content: ""; position: absolute; z-index: -1;
+  top: calc(-1 * var(--main-top)); bottom: 0;
+  left: 50%; width: 100vw; transform: translateX(-50%);
+  border-bottom: 1px solid var(--rule);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320' preserveAspectRatio='xMaxYMid slice'%3E%3Cg fill='none' stroke='%23BFD4EE' stroke-width='1'%3E%3Ccircle cx='1360' cy='160' r='900'/%3E%3Cline x1='940' y1='-10' x2='1290' y2='330'/%3E%3Cline x1='1210' y1='-10' x2='860' y2='330'/%3E%3C/g%3E%3C/svg%3E") right center / auto 100% no-repeat, var(--band);
+}
+.opener .label { display: block; margin-bottom: 1rem; }
+.opener h1 { margin-bottom: .35em; max-width: 16ch; color: var(--accent); }
+.lede {
+  font-size: clamp(1.12rem, 1.02rem + .45vw, 1.35rem);
+  line-height: 1.5; color: var(--ink-soft); max-width: 54ch; margin: 0;
+}
+.opener-rule { display: none; }
+
+/* Home page (the one with the team) and 404: a centred hero over a dot grid,
+   framed by two columns of triangles, one down each side. */
+body:has(.people) .opener, .opener.prose {
+  --tri-col: min(calc(17vw - 20px), 250px);   /* width of each triangle column */
+  text-align: center;
+  padding-top: clamp(2.5rem, 7vw, 6rem);
+  padding-bottom: clamp(4rem, 9vw, 7.5rem);
+}
+/* The text never runs under the columns: it narrows as they widen. */
+body:has(.people) .opener h1, .opener.prose h1 {
+  color: var(--ink); margin-inline: auto;
+  max-width: min(17ch, calc(100vw - 2 * var(--tri-col) - 4rem));
+}
+body:has(.people) .opener .lede, .opener.prose .lede {
+  margin-inline: auto; color: var(--ink);
+  max-width: min(54ch, calc(100vw - 2 * var(--tri-col) - 4rem));
+}
+body:has(.people) .opener::before, .opener.prose::before {
+  border-bottom-color: var(--rule);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 831.4' preserveAspectRatio='xMidYMin meet'%3E%3Cpolygon points='2.8,33.0 20.0,3.2 37.2,33.0' fill='%23B9C5F4'/%3E%3Cpolygon points='22.8,1.6 57.2,1.6 40.0,31.4' fill='%23B9C5F4'/%3E%3Cpolygon points='42.8,33.0 60.0,3.2 77.2,33.0' fill='%23B9C5F4'/%3E%3Cpolygon points='62.8,1.6 97.2,1.6 80.0,31.4' fill='%237EA6F2'/%3E%3Cpolygon points='82.8,33.0 100.0,3.2 117.2,33.0' fill='%23A8C5F6'/%3E%3Cpolygon points='122.8,33.0 140.0,3.2 157.2,33.0' fill='%239DB4F0'/%3E%3Cpolygon points='142.8,1.6 177.2,1.6 160.0,31.4' fill='%23B9C5F4'/%3E%3Cpolygon points='162.8,33.0 180.0,3.2 197.2,33.0' fill='%238FC0EA'/%3E%3Cpolygon points='182.8,1.6 217.2,1.6 200.0,31.4' fill='%23B9C5F4'/%3E%3Cpolygon points='202.8,33.0 220.0,3.2 237.2,33.0' fill='%23B9C5F4'/%3E%3Cpolygon points='2.8,36.3 37.2,36.3 20.0,66.0' fill='%237EA6F2'/%3E%3Cpolygon points='42.8,36.3 77.2,36.3 60.0,66.0' fill='%23A8C5F6'/%3E%3Cpolygon points='62.8,67.7 80.0,37.9 97.2,67.7' fill='%238FC0EA'/%3E%3Cpolygon points='82.8,36.3 117.2,36.3 100.0,66.0' fill='%23B9C5F4'/%3E%3Cpolygon points='102.8,67.7 120.0,37.9 137.2,67.7' fill='%23B9C5F4'/%3E%3Cpolygon points='122.8,36.3 157.2,36.3 140.0,66.0' fill='%23C9DCF8'/%3E%3Cpolygon points='142.8,67.7 160.0,37.9 177.2,67.7' fill='%23B9C5F4'/%3E%3Cpolygon points='2.8,102.3 20.0,72.5 37.2,102.3' fill='%23B9C5F4'/%3E%3Cpolygon points='22.8,70.9 57.2,70.9 40.0,100.7' fill='%237EA6F2'/%3E%3Cpolygon points='42.8,102.3 60.0,72.5 77.2,102.3' fill='%23C9DCF8'/%3E%3Cpolygon points='62.8,70.9 97.2,70.9 80.0,100.7' fill='%23B9C5F4'/%3E%3Cpolygon points='82.8,102.3 100.0,72.5 117.2,102.3' fill='%237EA6F2'/%3E%3Cpolygon points='102.8,70.9 137.2,70.9 120.0,100.7' fill='%237EA6F2'/%3E%3Cpolygon points='122.8,102.3 140.0,72.5 157.2,102.3' fill='%23C9DCF8'/%3E%3Cpolygon points='142.8,70.9 177.2,70.9 160.0,100.7' fill='%23C9DCF8'/%3E%3Cpolygon points='162.8,102.3 180.0,72.5 197.2,102.3' fill='%23C9DCF8'/%3E%3Cpolygon points='2.8,105.5 37.2,105.5 20.0,135.3' fill='%237EA6F2'/%3E%3Cpolygon points='22.8,136.9 40.0,107.2 57.2,136.9' fill='%239DB4F0'/%3E%3Cpolygon points='42.8,105.5 77.2,105.5 60.0,135.3' fill='%237EA6F2'/%3E%3Cpolygon points='62.8,136.9 80.0,107.2 97.2,136.9' fill='%23A8C5F6'/%3E%3Cpolygon points='82.8,105.5 117.2,105.5 100.0,135.3' fill='%23C9DCF8'/%3E%3Cpolygon points='102.8,136.9 120.0,107.2 137.2,136.9' fill='%23C9DCF8'/%3E%3Cpolygon points='122.8,105.5 157.2,105.5 140.0,135.3' fill='%238FC0EA'/%3E%3Cpolygon points='142.8,136.9 160.0,107.2 177.2,136.9' fill='%23C9DCF8'/%3E%3Cpolygon points='162.8,105.5 197.2,105.5 180.0,135.3' fill='%23B9C5F4'/%3E%3Cpolygon points='22.8,140.2 57.2,140.2 40.0,170.0' fill='%238FC0EA'/%3E%3Cpolygon points='42.8,171.6 60.0,141.8 77.2,171.6' fill='%23B9C5F4'/%3E%3Cpolygon points='62.8,140.2 97.2,140.2 80.0,170.0' fill='%23B9C5F4'/%3E%3Cpolygon points='82.8,171.6 100.0,141.8 117.2,171.6' fill='%239DB4F0'/%3E%3Cpolygon points='102.8,140.2 137.2,140.2 120.0,170.0' fill='%238FC0EA'/%3E%3Cpolygon points='122.8,171.6 140.0,141.8 157.2,171.6' fill='%23C9DCF8'/%3E%3Cpolygon points='142.8,140.2 177.2,140.2 160.0,170.0' fill='%23C9DCF8'/%3E%3Cpolygon points='2.8,174.8 37.2,174.8 20.0,204.6' fill='%23B9C5F4'/%3E%3Cpolygon points='22.8,206.2 40.0,176.4 57.2,206.2' fill='%237EA6F2'/%3E%3Cpolygon points='42.8,174.8 77.2,174.8 60.0,204.6' fill='%238FC0EA'/%3E%3Cpolygon points='62.8,206.2 80.0,176.4 97.2,206.2' fill='%23B9C5F4'/%3E%3Cpolygon points='82.8,174.8 117.2,174.8 100.0,204.6' fill='%23C9DCF8'/%3E%3Cpolygon points='2.8,240.9 20.0,211.1 37.2,240.9' fill='%23C9DCF8'/%3E%3Cpolygon points='42.8,240.9 60.0,211.1 77.2,240.9' fill='%23C9DCF8'/%3E%3Cpolygon points='62.8,209.5 97.2,209.5 80.0,239.3' fill='%23C9DCF8'/%3E%3Cpolygon points='22.8,275.5 40.0,245.7 57.2,275.5' fill='%23B9C5F4'/%3E%3Cpolygon points='42.8,244.1 77.2,244.1 60.0,273.9' fill='%23B9C5F4'/%3E%3Cpolygon points='62.8,275.5 80.0,245.7 97.2,275.5' fill='%23B9C5F4'/%3E%3Cpolygon points='82.8,244.1 117.2,244.1 100.0,273.9' fill='%23A8C5F6'/%3E%3Cpolygon points='2.8,310.2 20.0,280.4 37.2,310.2' fill='%23C9DCF8'/%3E%3Cpolygon points='22.8,278.7 57.2,278.7 40.0,308.5' fill='%23B9C5F4'/%3E%3Cpolygon points='42.8,310.2 60.0,280.4 77.2,310.2' fill='%23C9DCF8'/%3E%3Cpolygon points='62.8,278.7 97.2,278.7 80.0,308.5' fill='%23B9C5F4'/%3E%3Cpolygon points='2.8,313.4 37.2,313.4 20.0,343.2' fill='%238FC0EA'/%3E%3Cpolygon points='22.8,344.8 40.0,315.0 57.2,344.8' fill='%23B9C5F4'/%3E%3Cpolygon points='22.8,348.0 57.2,348.0 40.0,377.8' fill='%23A8C5F6'/%3E%3Cpolygon points='42.8,379.4 60.0,349.6 77.2,379.4' fill='%23A8C5F6'/%3E%3Cpolygon points='62.8,348.0 97.2,348.0 80.0,377.8' fill='%23B9C5F4'/%3E%3Cpolygon points='2.8,382.7 37.2,382.7 20.0,412.5' fill='%23A8C5F6'/%3E%3Cpolygon points='22.8,414.1 40.0,384.3 57.2,414.1' fill='%237EA6F2'/%3E%3Cpolygon points='42.8,382.7 77.2,382.7 60.0,412.5' fill='%238FC0EA'/%3E%3Cpolygon points='62.8,414.1 80.0,384.3 97.2,414.1' fill='%23B9C5F4'/%3E%3Cpolygon points='82.8,382.7 117.2,382.7 100.0,412.5' fill='%23A8C5F6'/%3E%3Cpolygon points='102.8,414.1 120.0,384.3 137.2,414.1' fill='%23C9DCF8'/%3E%3Cpolygon points='22.8,417.3 57.2,417.3 40.0,447.1' fill='%23A8C5F6'/%3E%3Cpolygon points='62.8,417.3 97.2,417.3 80.0,447.1' fill='%23A8C5F6'/%3E%3Cpolygon points='22.8,483.4 40.0,453.6 57.2,483.4' fill='%238FC0EA'/%3E%3Cpolygon points='42.8,451.9 77.2,451.9 60.0,481.7' fill='%23B9C5F4'/%3E%3Cpolygon points='62.8,483.4 80.0,453.6 97.2,483.4' fill='%23B9C5F4'/%3E%3Cpolygon points='2.8,518.0 20.0,488.2 37.2,518.0' fill='%237EA6F2'/%3E%3Cpolygon points='22.8,486.6 57.2,486.6 40.0,516.4' fill='%23C9DCF8'/%3E%3Cpolygon points='42.8,518.0 60.0,488.2 77.2,518.0' fill='%23C9DCF8'/%3E%3Cpolygon points='2.8,521.2 37.2,521.2 20.0,551.0' fill='%239DB4F0'/%3E%3Cpolygon points='22.8,552.6 40.0,522.8 57.2,552.6' fill='%23A8C5F6'/%3E%3Cpolygon points='42.8,521.2 77.2,521.2 60.0,551.0' fill='%23C9DCF8'/%3E%3Cpolygon points='62.8,552.6 80.0,522.8 97.2,552.6' fill='%23A8C5F6'/%3E%3Cpolygon points='2.8,587.3 20.0,557.5 37.2,587.3' fill='%239DB4F0'/%3E%3Cpolygon points='22.8,555.9 57.2,555.9 40.0,585.7' fill='%23A8C5F6'/%3E%3Cpolygon points='42.8,587.3 60.0,557.5 77.2,587.3' fill='%23A8C5F6'/%3E%3Cpolygon points='62.8,555.9 97.2,555.9 80.0,585.7' fill='%23B9C5F4'/%3E%3Cpolygon points='2.8,590.5 37.2,590.5 20.0,620.3' fill='%238FC0EA'/%3E%3Cpolygon points='22.8,621.9 40.0,592.1 57.2,621.9' fill='%237EA6F2'/%3E%3Cpolygon points='42.8,590.5 77.2,590.5 60.0,620.3' fill='%23B9C5F4'/%3E%3Cpolygon points='82.8,590.5 117.2,590.5 100.0,620.3' fill='%23A8C5F6'/%3E%3Cpolygon points='102.8,621.9 120.0,592.1 137.2,621.9' fill='%23B9C5F4'/%3E%3Cpolygon points='22.8,625.2 57.2,625.2 40.0,654.9' fill='%23C9DCF8'/%3E%3Cpolygon points='42.8,656.6 60.0,626.8 77.2,656.6' fill='%239DB4F0'/%3E%3Cpolygon points='62.8,625.2 97.2,625.2 80.0,654.9' fill='%23B9C5F4'/%3E%3Cpolygon points='82.8,656.6 100.0,626.8 117.2,656.6' fill='%23A8C5F6'/%3E%3Cpolygon points='2.8,659.8 37.2,659.8 20.0,689.6' fill='%23B9C5F4'/%3E%3Cpolygon points='42.8,659.8 77.2,659.8 60.0,689.6' fill='%237EA6F2'/%3E%3Cpolygon points='62.8,691.2 80.0,661.4 97.2,691.2' fill='%237EA6F2'/%3E%3Cpolygon points='82.8,659.8 117.2,659.8 100.0,689.6' fill='%23A8C5F6'/%3E%3Cpolygon points='102.8,691.2 120.0,661.4 137.2,691.2' fill='%23C9DCF8'/%3E%3Cpolygon points='122.8,659.8 157.2,659.8 140.0,689.6' fill='%23B9C5F4'/%3E%3Cpolygon points='2.8,725.8 20.0,696.1 37.2,725.8' fill='%237EA6F2'/%3E%3Cpolygon points='22.8,694.4 57.2,694.4 40.0,724.2' fill='%23A8C5F6'/%3E%3Cpolygon points='42.8,725.8 60.0,696.1 77.2,725.8' fill='%23A8C5F6'/%3E%3Cpolygon points='62.8,694.4 97.2,694.4 80.0,724.2' fill='%23C9DCF8'/%3E%3Cpolygon points='82.8,725.8 100.0,696.1 117.2,725.8' fill='%238FC0EA'/%3E%3Cpolygon points='102.8,694.4 137.2,694.4 120.0,724.2' fill='%23A8C5F6'/%3E%3Cpolygon points='122.8,725.8 140.0,696.1 157.2,725.8' fill='%239DB4F0'/%3E%3Cpolygon points='142.8,694.4 177.2,694.4 160.0,724.2' fill='%23B9C5F4'/%3E%3Cpolygon points='162.8,725.8 180.0,696.1 197.2,725.8' fill='%23C9DCF8'/%3E%3Cpolygon points='2.8,729.1 37.2,729.1 20.0,758.9' fill='%23B9C5F4'/%3E%3Cpolygon points='22.8,760.5 40.0,730.7 57.2,760.5' fill='%23A8C5F6'/%3E%3Cpolygon points='42.8,729.1 77.2,729.1 60.0,758.9' fill='%238FC0EA'/%3E%3Cpolygon points='62.8,760.5 80.0,730.7 97.2,760.5' fill='%237EA6F2'/%3E%3Cpolygon points='82.8,729.1 117.2,729.1 100.0,758.9' fill='%23C9DCF8'/%3E%3Cpolygon points='102.8,760.5 120.0,730.7 137.2,760.5' fill='%237EA6F2'/%3E%3Cpolygon points='122.8,729.1 157.2,729.1 140.0,758.9' fill='%23A8C5F6'/%3E%3Cpolygon points='142.8,760.5 160.0,730.7 177.2,760.5' fill='%23A8C5F6'/%3E%3Cpolygon points='2.8,795.1 20.0,765.3 37.2,795.1' fill='%238FC0EA'/%3E%3Cpolygon points='22.8,763.7 57.2,763.7 40.0,793.5' fill='%239DB4F0'/%3E%3Cpolygon points='42.8,795.1 60.0,765.3 77.2,795.1' fill='%23B9C5F4'/%3E%3Cpolygon points='62.8,763.7 97.2,763.7 80.0,793.5' fill='%237EA6F2'/%3E%3Cpolygon points='82.8,795.1 100.0,765.3 117.2,795.1' fill='%23C9DCF8'/%3E%3Cpolygon points='102.8,763.7 137.2,763.7 120.0,793.5' fill='%237EA6F2'/%3E%3Cpolygon points='122.8,795.1 140.0,765.3 157.2,795.1' fill='%23A8C5F6'/%3E%3Cpolygon points='142.8,763.7 177.2,763.7 160.0,793.5' fill='%23A8C5F6'/%3E%3Cpolygon points='2.8,798.4 37.2,798.4 20.0,828.2' fill='%238FC0EA'/%3E%3Cpolygon points='22.8,829.8 40.0,800.0 57.2,829.8' fill='%237EA6F2'/%3E%3Cpolygon points='42.8,798.4 77.2,798.4 60.0,828.2' fill='%23C9DCF8'/%3E%3Cpolygon points='62.8,829.8 80.0,800.0 97.2,829.8' fill='%23A8C5F6'/%3E%3Cpolygon points='82.8,798.4 117.2,798.4 100.0,828.2' fill='%23B9C5F4'/%3E%3Cpolygon points='102.8,829.8 120.0,800.0 137.2,829.8' fill='%23C9DCF8'/%3E%3C/svg%3E")  left top  / var(--tri-col) auto repeat-y,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 831.4' preserveAspectRatio='xMidYMin meet'%3E%3Cpolygon points='182.8,1.6 217.2,1.6 200.0,31.4' fill='%238FC0EA'/%3E%3Cpolygon points='162.8,33.0 180.0,3.2 197.2,33.0' fill='%23A8C5F6'/%3E%3Cpolygon points='142.8,1.6 177.2,1.6 160.0,31.4' fill='%23C9DCF8'/%3E%3Cpolygon points='122.8,33.0 140.0,3.2 157.2,33.0' fill='%23A8C5F6'/%3E%3Cpolygon points='102.8,1.6 137.2,1.6 120.0,31.4' fill='%23C9DCF8'/%3E%3Cpolygon points='82.8,33.0 100.0,3.2 117.2,33.0' fill='%23B9C5F4'/%3E%3Cpolygon points='202.8,36.3 237.2,36.3 220.0,66.0' fill='%23B9C5F4'/%3E%3Cpolygon points='182.8,67.7 200.0,37.9 217.2,67.7' fill='%238FC0EA'/%3E%3Cpolygon points='162.8,36.3 197.2,36.3 180.0,66.0' fill='%237EA6F2'/%3E%3Cpolygon points='142.8,67.7 160.0,37.9 177.2,67.7' fill='%237EA6F2'/%3E%3Cpolygon points='122.8,36.3 157.2,36.3 140.0,66.0' fill='%239DB4F0'/%3E%3Cpolygon points='102.8,67.7 120.0,37.9 137.2,67.7' fill='%23A8C5F6'/%3E%3Cpolygon points='82.8,36.3 117.2,36.3 100.0,66.0' fill='%23C9DCF8'/%3E%3Cpolygon points='62.8,67.7 80.0,37.9 97.2,67.7' fill='%23A8C5F6'/%3E%3Cpolygon points='42.8,36.3 77.2,36.3 60.0,66.0' fill='%23A8C5F6'/%3E%3Cpolygon points='202.8,102.3 220.0,72.5 237.2,102.3' fill='%238FC0EA'/%3E%3Cpolygon points='182.8,70.9 217.2,70.9 200.0,100.7' fill='%238FC0EA'/%3E%3Cpolygon points='162.8,102.3 180.0,72.5 197.2,102.3' fill='%238FC0EA'/%3E%3Cpolygon points='142.8,70.9 177.2,70.9 160.0,100.7' fill='%23A8C5F6'/%3E%3Cpolygon points='122.8,102.3 140.0,72.5 157.2,102.3' fill='%23A8C5F6'/%3E%3Cpolygon points='102.8,70.9 137.2,70.9 120.0,100.7' fill='%239DB4F0'/%3E%3Cpolygon points='82.8,102.3 100.0,72.5 117.2,102.3' fill='%23A8C5F6'/%3E%3Cpolygon points='62.8,70.9 97.2,70.9 80.0,100.7' fill='%237EA6F2'/%3E%3Cpolygon points='202.8,105.5 237.2,105.5 220.0,135.3' fill='%23C9DCF8'/%3E%3Cpolygon points='182.8,136.9 200.0,107.2 217.2,136.9' fill='%23C9DCF8'/%3E%3Cpolygon points='162.8,105.5 197.2,105.5 180.0,135.3' fill='%23C9DCF8'/%3E%3Cpolygon points='142.8,136.9 160.0,107.2 177.2,136.9' fill='%238FC0EA'/%3E%3Cpolygon points='122.8,105.5 157.2,105.5 140.0,135.3' fill='%23C9DCF8'/%3E%3Cpolygon points='102.8,136.9 120.0,107.2 137.2,136.9' fill='%23B9C5F4'/%3E%3Cpolygon points='82.8,105.5 117.2,105.5 100.0,135.3' fill='%239DB4F0'/%3E%3Cpolygon points='62.8,136.9 80.0,107.2 97.2,136.9' fill='%238FC0EA'/%3E%3Cpolygon points='42.8,105.5 77.2,105.5 60.0,135.3' fill='%23B9C5F4'/%3E%3Cpolygon points='22.8,136.9 40.0,107.2 57.2,136.9' fill='%23B9C5F4'/%3E%3Cpolygon points='202.8,171.6 220.0,141.8 237.2,171.6' fill='%23A8C5F6'/%3E%3Cpolygon points='182.8,140.2 217.2,140.2 200.0,170.0' fill='%237EA6F2'/%3E%3Cpolygon points='142.8,140.2 177.2,140.2 160.0,170.0' fill='%237EA6F2'/%3E%3Cpolygon points='122.8,171.6 140.0,141.8 157.2,171.6' fill='%23A8C5F6'/%3E%3Cpolygon points='102.8,140.2 137.2,140.2 120.0,170.0' fill='%23A8C5F6'/%3E%3Cpolygon points='82.8,171.6 100.0,141.8 117.2,171.6' fill='%237EA6F2'/%3E%3Cpolygon points='62.8,140.2 97.2,140.2 80.0,170.0' fill='%23A8C5F6'/%3E%3Cpolygon points='42.8,171.6 60.0,141.8 77.2,171.6' fill='%23A8C5F6'/%3E%3Cpolygon points='202.8,174.8 237.2,174.8 220.0,204.6' fill='%238FC0EA'/%3E%3Cpolygon points='182.8,206.2 200.0,176.4 217.2,206.2' fill='%237EA6F2'/%3E%3Cpolygon points='142.8,206.2 160.0,176.4 177.2,206.2' fill='%23A8C5F6'/%3E%3Cpolygon points='122.8,174.8 157.2,174.8 140.0,204.6' fill='%238FC0EA'/%3E%3Cpolygon points='102.8,206.2 120.0,176.4 137.2,206.2' fill='%23C9DCF8'/%3E%3Cpolygon points='202.8,240.9 220.0,211.1 237.2,240.9' fill='%23B9C5F4'/%3E%3Cpolygon points='182.8,209.5 217.2,209.5 200.0,239.3' fill='%23C9DCF8'/%3E%3Cpolygon points='162.8,240.9 180.0,211.1 197.2,240.9' fill='%23A8C5F6'/%3E%3Cpolygon points='142.8,209.5 177.2,209.5 160.0,239.3' fill='%238FC0EA'/%3E%3Cpolygon points='122.8,240.9 140.0,211.1 157.2,240.9' fill='%23B9C5F4'/%3E%3Cpolygon points='102.8,209.5 137.2,209.5 120.0,239.3' fill='%23C9DCF8'/%3E%3Cpolygon points='182.8,275.5 200.0,245.7 217.2,275.5' fill='%239DB4F0'/%3E%3Cpolygon points='162.8,244.1 197.2,244.1 180.0,273.9' fill='%23B9C5F4'/%3E%3Cpolygon points='142.8,275.5 160.0,245.7 177.2,275.5' fill='%238FC0EA'/%3E%3Cpolygon points='122.8,244.1 157.2,244.1 140.0,273.9' fill='%23B9C5F4'/%3E%3Cpolygon points='102.8,275.5 120.0,245.7 137.2,275.5' fill='%23C9DCF8'/%3E%3Cpolygon points='82.8,244.1 117.2,244.1 100.0,273.9' fill='%23C9DCF8'/%3E%3Cpolygon points='202.8,310.2 220.0,280.4 237.2,310.2' fill='%23C9DCF8'/%3E%3Cpolygon points='182.8,278.7 217.2,278.7 200.0,308.5' fill='%239DB4F0'/%3E%3Cpolygon points='162.8,310.2 180.0,280.4 197.2,310.2' fill='%23A8C5F6'/%3E%3Cpolygon points='142.8,278.7 177.2,278.7 160.0,308.5' fill='%23B9C5F4'/%3E%3Cpolygon points='202.8,313.4 237.2,313.4 220.0,343.2' fill='%23B9C5F4'/%3E%3Cpolygon points='182.8,344.8 200.0,315.0 217.2,344.8' fill='%238FC0EA'/%3E%3Cpolygon points='162.8,313.4 197.2,313.4 180.0,343.2' fill='%23A8C5F6'/%3E%3Cpolygon points='182.8,348.0 217.2,348.0 200.0,377.8' fill='%239DB4F0'/%3E%3Cpolygon points='162.8,379.4 180.0,349.6 197.2,379.4' fill='%23A8C5F6'/%3E%3Cpolygon points='142.8,348.0 177.2,348.0 160.0,377.8' fill='%23C9DCF8'/%3E%3Cpolygon points='122.8,379.4 140.0,349.6 157.2,379.4' fill='%23A8C5F6'/%3E%3Cpolygon points='202.8,382.7 237.2,382.7 220.0,412.5' fill='%238FC0EA'/%3E%3Cpolygon points='182.8,414.1 200.0,384.3 217.2,414.1' fill='%238FC0EA'/%3E%3Cpolygon points='162.8,382.7 197.2,382.7 180.0,412.5' fill='%23B9C5F4'/%3E%3Cpolygon points='142.8,414.1 160.0,384.3 177.2,414.1' fill='%23A8C5F6'/%3E%3Cpolygon points='122.8,382.7 157.2,382.7 140.0,412.5' fill='%23A8C5F6'/%3E%3Cpolygon points='102.8,414.1 120.0,384.3 137.2,414.1' fill='%23C9DCF8'/%3E%3Cpolygon points='202.8,448.7 220.0,418.9 237.2,448.7' fill='%238FC0EA'/%3E%3Cpolygon points='182.8,417.3 217.2,417.3 200.0,447.1' fill='%237EA6F2'/%3E%3Cpolygon points='162.8,448.7 180.0,418.9 197.2,448.7' fill='%23B9C5F4'/%3E%3Cpolygon points='142.8,417.3 177.2,417.3 160.0,447.1' fill='%239DB4F0'/%3E%3Cpolygon points='122.8,448.7 140.0,418.9 157.2,448.7' fill='%23A8C5F6'/%3E%3Cpolygon points='102.8,417.3 137.2,417.3 120.0,447.1' fill='%23A8C5F6'/%3E%3Cpolygon points='202.8,451.9 237.2,451.9 220.0,481.7' fill='%237EA6F2'/%3E%3Cpolygon points='182.8,483.4 200.0,453.6 217.2,483.4' fill='%239DB4F0'/%3E%3Cpolygon points='162.8,451.9 197.2,451.9 180.0,481.7' fill='%23B9C5F4'/%3E%3Cpolygon points='142.8,483.4 160.0,453.6 177.2,483.4' fill='%23B9C5F4'/%3E%3Cpolygon points='122.8,451.9 157.2,451.9 140.0,481.7' fill='%237EA6F2'/%3E%3Cpolygon points='102.8,483.4 120.0,453.6 137.2,483.4' fill='%23A8C5F6'/%3E%3Cpolygon points='82.8,451.9 117.2,451.9 100.0,481.7' fill='%23C9DCF8'/%3E%3Cpolygon points='202.8,518.0 220.0,488.2 237.2,518.0' fill='%238FC0EA'/%3E%3Cpolygon points='182.8,486.6 217.2,486.6 200.0,516.4' fill='%23C9DCF8'/%3E%3Cpolygon points='162.8,518.0 180.0,488.2 197.2,518.0' fill='%238FC0EA'/%3E%3Cpolygon points='102.8,486.6 137.2,486.6 120.0,516.4' fill='%237EA6F2'/%3E%3Cpolygon points='82.8,518.0 100.0,488.2 117.2,518.0' fill='%23B9C5F4'/%3E%3Cpolygon points='62.8,486.6 97.2,486.6 80.0,516.4' fill='%23C9DCF8'/%3E%3Cpolygon points='202.8,521.2 237.2,521.2 220.0,551.0' fill='%23C9DCF8'/%3E%3Cpolygon points='182.8,552.6 200.0,522.8 217.2,552.6' fill='%23B9C5F4'/%3E%3Cpolygon points='162.8,521.2 197.2,521.2 180.0,551.0' fill='%237EA6F2'/%3E%3Cpolygon points='142.8,552.6 160.0,522.8 177.2,552.6' fill='%23B9C5F4'/%3E%3Cpolygon points='122.8,521.2 157.2,521.2 140.0,551.0' fill='%239DB4F0'/%3E%3Cpolygon points='102.8,552.6 120.0,522.8 137.2,552.6' fill='%237EA6F2'/%3E%3Cpolygon points='82.8,521.2 117.2,521.2 100.0,551.0' fill='%239DB4F0'/%3E%3Cpolygon points='62.8,552.6 80.0,522.8 97.2,552.6' fill='%23C9DCF8'/%3E%3Cpolygon points='202.8,587.3 220.0,557.5 237.2,587.3' fill='%23A8C5F6'/%3E%3Cpolygon points='182.8,555.9 217.2,555.9 200.0,585.7' fill='%23A8C5F6'/%3E%3Cpolygon points='162.8,587.3 180.0,557.5 197.2,587.3' fill='%23A8C5F6'/%3E%3Cpolygon points='142.8,555.9 177.2,555.9 160.0,585.7' fill='%23C9DCF8'/%3E%3Cpolygon points='122.8,587.3 140.0,557.5 157.2,587.3' fill='%239DB4F0'/%3E%3Cpolygon points='102.8,555.9 137.2,555.9 120.0,585.7' fill='%237EA6F2'/%3E%3Cpolygon points='82.8,587.3 100.0,557.5 117.2,587.3' fill='%23B9C5F4'/%3E%3Cpolygon points='62.8,555.9 97.2,555.9 80.0,585.7' fill='%23C9DCF8'/%3E%3Cpolygon points='182.8,621.9 200.0,592.1 217.2,621.9' fill='%23A8C5F6'/%3E%3Cpolygon points='162.8,590.5 197.2,590.5 180.0,620.3' fill='%23A8C5F6'/%3E%3Cpolygon points='142.8,621.9 160.0,592.1 177.2,621.9' fill='%23C9DCF8'/%3E%3Cpolygon points='122.8,590.5 157.2,590.5 140.0,620.3' fill='%23A8C5F6'/%3E%3Cpolygon points='102.8,621.9 120.0,592.1 137.2,621.9' fill='%238FC0EA'/%3E%3Cpolygon points='82.8,590.5 117.2,590.5 100.0,620.3' fill='%23B9C5F4'/%3E%3Cpolygon points='62.8,621.9 80.0,592.1 97.2,621.9' fill='%23B9C5F4'/%3E%3Cpolygon points='42.8,590.5 77.2,590.5 60.0,620.3' fill='%23B9C5F4'/%3E%3Cpolygon points='202.8,656.6 220.0,626.8 237.2,656.6' fill='%239DB4F0'/%3E%3Cpolygon points='182.8,625.2 217.2,625.2 200.0,654.9' fill='%239DB4F0'/%3E%3Cpolygon points='162.8,656.6 180.0,626.8 197.2,656.6' fill='%238FC0EA'/%3E%3Cpolygon points='142.8,625.2 177.2,625.2 160.0,654.9' fill='%23C9DCF8'/%3E%3Cpolygon points='122.8,656.6 140.0,626.8 157.2,656.6' fill='%237EA6F2'/%3E%3Cpolygon points='102.8,625.2 137.2,625.2 120.0,654.9' fill='%23C9DCF8'/%3E%3Cpolygon points='82.8,656.6 100.0,626.8 117.2,656.6' fill='%239DB4F0'/%3E%3Cpolygon points='62.8,625.2 97.2,625.2 80.0,654.9' fill='%23C9DCF8'/%3E%3Cpolygon points='42.8,656.6 60.0,626.8 77.2,656.6' fill='%23A8C5F6'/%3E%3Cpolygon points='182.8,691.2 200.0,661.4 217.2,691.2' fill='%238FC0EA'/%3E%3Cpolygon points='162.8,659.8 197.2,659.8 180.0,689.6' fill='%23B9C5F4'/%3E%3Cpolygon points='142.8,691.2 160.0,661.4 177.2,691.2' fill='%23C9DCF8'/%3E%3Cpolygon points='122.8,659.8 157.2,659.8 140.0,689.6' fill='%23C9DCF8'/%3E%3Cpolygon points='82.8,659.8 117.2,659.8 100.0,689.6' fill='%23C9DCF8'/%3E%3Cpolygon points='202.8,725.8 220.0,696.1 237.2,725.8' fill='%23B9C5F4'/%3E%3Cpolygon points='182.8,694.4 217.2,694.4 200.0,724.2' fill='%237EA6F2'/%3E%3Cpolygon points='162.8,725.8 180.0,696.1 197.2,725.8' fill='%23B9C5F4'/%3E%3Cpolygon points='142.8,694.4 177.2,694.4 160.0,724.2' fill='%23B9C5F4'/%3E%3Cpolygon points='122.8,725.8 140.0,696.1 157.2,725.8' fill='%238FC0EA'/%3E%3Cpolygon points='102.8,694.4 137.2,694.4 120.0,724.2' fill='%239DB4F0'/%3E%3Cpolygon points='82.8,725.8 100.0,696.1 117.2,725.8' fill='%23C9DCF8'/%3E%3Cpolygon points='62.8,694.4 97.2,694.4 80.0,724.2' fill='%23C9DCF8'/%3E%3Cpolygon points='202.8,729.1 237.2,729.1 220.0,758.9' fill='%23C9DCF8'/%3E%3Cpolygon points='142.8,760.5 160.0,730.7 177.2,760.5' fill='%239DB4F0'/%3E%3Cpolygon points='122.8,729.1 157.2,729.1 140.0,758.9' fill='%239DB4F0'/%3E%3Cpolygon points='102.8,760.5 120.0,730.7 137.2,760.5' fill='%239DB4F0'/%3E%3Cpolygon points='82.8,729.1 117.2,729.1 100.0,758.9' fill='%23B9C5F4'/%3E%3Cpolygon points='62.8,760.5 80.0,730.7 97.2,760.5' fill='%23B9C5F4'/%3E%3Cpolygon points='202.8,795.1 220.0,765.3 237.2,795.1' fill='%237EA6F2'/%3E%3Cpolygon points='182.8,763.7 217.2,763.7 200.0,793.5' fill='%238FC0EA'/%3E%3Cpolygon points='162.8,795.1 180.0,765.3 197.2,795.1' fill='%23A8C5F6'/%3E%3Cpolygon points='142.8,763.7 177.2,763.7 160.0,793.5' fill='%23C9DCF8'/%3E%3Cpolygon points='122.8,795.1 140.0,765.3 157.2,795.1' fill='%237EA6F2'/%3E%3Cpolygon points='102.8,763.7 137.2,763.7 120.0,793.5' fill='%23B9C5F4'/%3E%3Cpolygon points='82.8,795.1 100.0,765.3 117.2,795.1' fill='%23B9C5F4'/%3E%3Cpolygon points='62.8,763.7 97.2,763.7 80.0,793.5' fill='%23A8C5F6'/%3E%3Cpolygon points='202.8,798.4 237.2,798.4 220.0,828.2' fill='%23C9DCF8'/%3E%3Cpolygon points='182.8,829.8 200.0,800.0 217.2,829.8' fill='%23B9C5F4'/%3E%3Cpolygon points='162.8,798.4 197.2,798.4 180.0,828.2' fill='%23B9C5F4'/%3E%3Cpolygon points='142.8,829.8 160.0,800.0 177.2,829.8' fill='%239DB4F0'/%3E%3Cpolygon points='102.8,829.8 120.0,800.0 137.2,829.8' fill='%23B9C5F4'/%3E%3Cpolygon points='82.8,798.4 117.2,798.4 100.0,828.2' fill='%23B9C5F4'/%3E%3C/svg%3E") right top / var(--tri-col) auto repeat-y,
+    radial-gradient(circle, var(--dot) 1.4px, transparent 1.9px) 0 0 / 38px 38px,
+    linear-gradient(180deg, var(--band) 0%, #F4F8FE 45%, var(--peach) 100%);
+}
+/* On phones the side columns would sit under the text, so the triangles
+   become a strip along the bottom of the band instead. */
+@media (max-width: 760px) {
+  body:has(.people) .opener, .opener.prose { padding-bottom: 6rem; }
+  body:has(.people) .opener h1, .opener.prose h1 { max-width: 17ch; }
+  body:has(.people) .opener .lede, .opener.prose .lede { max-width: 54ch; }
+  body:has(.people) .opener::before, .opener.prose::before {
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 440 69.3'%3E%3Cpolygon points='2.8,33.0 20.0,3.2 37.2,33.0' fill='%239DB4F0'/%3E%3Cpolygon points='22.8,1.6 57.2,1.6 40.0,31.4' fill='%23B9C5F4'/%3E%3Cpolygon points='62.8,1.6 97.2,1.6 80.0,31.4' fill='%239DB4F0'/%3E%3Cpolygon points='142.8,1.6 177.2,1.6 160.0,31.4' fill='%237EA6F2'/%3E%3Cpolygon points='222.8,1.6 257.2,1.6 240.0,31.4' fill='%23A8C5F6'/%3E%3Cpolygon points='262.8,1.6 297.2,1.6 280.0,31.4' fill='%23A8C5F6'/%3E%3Cpolygon points='302.8,1.6 337.2,1.6 320.0,31.4' fill='%23A8C5F6'/%3E%3Cpolygon points='322.8,33.0 340.0,3.2 357.2,33.0' fill='%23A8C5F6'/%3E%3Cpolygon points='362.8,33.0 380.0,3.2 397.2,33.0' fill='%239DB4F0'/%3E%3Cpolygon points='382.8,1.6 417.2,1.6 400.0,31.4' fill='%239DB4F0'/%3E%3Cpolygon points='2.8,36.3 37.2,36.3 20.0,66.0' fill='%238FC0EA'/%3E%3Cpolygon points='22.8,67.7 40.0,37.9 57.2,67.7' fill='%23C9DCF8'/%3E%3Cpolygon points='42.8,36.3 77.2,36.3 60.0,66.0' fill='%23A8C5F6'/%3E%3Cpolygon points='62.8,67.7 80.0,37.9 97.2,67.7' fill='%23C9DCF8'/%3E%3Cpolygon points='82.8,36.3 117.2,36.3 100.0,66.0' fill='%23B9C5F4'/%3E%3Cpolygon points='102.8,67.7 120.0,37.9 137.2,67.7' fill='%23B9C5F4'/%3E%3Cpolygon points='122.8,36.3 157.2,36.3 140.0,66.0' fill='%23C9DCF8'/%3E%3Cpolygon points='162.8,36.3 197.2,36.3 180.0,66.0' fill='%23C9DCF8'/%3E%3Cpolygon points='182.8,67.7 200.0,37.9 217.2,67.7' fill='%23C9DCF8'/%3E%3Cpolygon points='202.8,36.3 237.2,36.3 220.0,66.0' fill='%238FC0EA'/%3E%3Cpolygon points='222.8,67.7 240.0,37.9 257.2,67.7' fill='%237EA6F2'/%3E%3Cpolygon points='242.8,36.3 277.2,36.3 260.0,66.0' fill='%237EA6F2'/%3E%3Cpolygon points='262.8,67.7 280.0,37.9 297.2,67.7' fill='%23C9DCF8'/%3E%3Cpolygon points='282.8,36.3 317.2,36.3 300.0,66.0' fill='%237EA6F2'/%3E%3Cpolygon points='302.8,67.7 320.0,37.9 337.2,67.7' fill='%238FC0EA'/%3E%3Cpolygon points='322.8,36.3 357.2,36.3 340.0,66.0' fill='%23B9C5F4'/%3E%3Cpolygon points='342.8,67.7 360.0,37.9 377.2,67.7' fill='%238FC0EA'/%3E%3Cpolygon points='382.8,67.7 400.0,37.9 417.2,67.7' fill='%23A8C5F6'/%3E%3Cpolygon points='402.8,36.3 437.2,36.3 420.0,66.0' fill='%23A8C5F6'/%3E%3C/svg%3E") left bottom / auto 52px repeat-x,
+      radial-gradient(circle, var(--dot) 1.4px, transparent 1.9px) 0 0 / 30px 30px,
+      linear-gradient(180deg, var(--band) 0%, #F4F8FE 45%, var(--peach) 100%);
+  }
+}
+
+/* ==========================================================================
+   Pill buttons — used for source links and profile links
+   ========================================================================== */
+
+.frameworks .srcs a,
+.person .links a {
+  display: inline-block; text-decoration: none;
+  background: var(--accent-soft); color: var(--accent);
+  border-radius: 999px; padding: .3rem .85rem; line-height: 1.4;
+}
+.frameworks .srcs a:hover,
+.person .links a:hover { background: var(--accent); color: var(--paper); }
 
 /* ==========================================================================
    Notices (provisional banner, methodology notes)
@@ -185,27 +269,27 @@ main section + nav { margin-top: clamp(3rem, 6.5vw, 5rem); }
 .notice {
   border: 1px solid var(--flag-rule);
   background: var(--flag-bg);
-  border-radius: 4px;
-  padding: 1rem 1.15rem;
+  padding: 1.1rem 1.4rem;
   margin: 0 0 2.25rem;
   font-family: var(--sans);
-  font-size: .875rem;
+  font-size: .9rem;
   line-height: 1.6;
   color: var(--ink);
 }
-.notice .label { color: var(--flag); display: block; margin-bottom: .35rem; }
+.notice .label { color: var(--flag); display: block; margin-bottom: .35rem; font-weight: 600; }
 .notice p { margin-bottom: .6em; }
 
 .note {
-  border-left: 2px solid var(--rule);
-  padding: .1rem 0 .1rem 1.1rem;
+  border: 1px solid var(--rule);
+  background: var(--band);
+  padding: 1rem 1.25rem;
   margin: 1.6rem 0;
   font-family: var(--sans);
-  font-size: .875rem;
+  font-size: .9rem;
   line-height: 1.62;
   color: var(--ink-soft);
 }
-.note .label { color: var(--ink-faint); display: block; margin-bottom: .3rem; }
+.note .label { display: block; margin-bottom: .3rem; }
 
 /* ==========================================================================
    People (about page)
@@ -213,32 +297,40 @@ main section + nav { margin-top: clamp(3rem, 6.5vw, 5rem); }
 
 .people {
   list-style: none; padding: 0; margin: 0;
-  display: grid; gap: clamp(2rem, 4vw, 3rem);
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  display: grid; gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
-.person { display: flex; flex-direction: column; }
+.person {
+  display: flex; flex-direction: column;
+  background: var(--paper); border: 1px solid var(--rule);
+  padding: 1.6rem 1.5rem 1.5rem;
+}
 .person img {
-  width: 104px; height: 104px; border-radius: 50%;
-  object-fit: cover; display: block; margin-bottom: 1.1rem;
+  width: 92px; height: 92px; border-radius: 50%;
+  object-fit: cover; display: block; margin-bottom: 1.2rem;
   background: var(--paper-2);
-  box-shadow: 0 0 0 1px var(--rule);
 }
-.person h3 { margin: 0 0 .15rem; font-size: 1.1rem; }
+.person h3 { margin: 0 0 .3rem; font-size: 1.6rem; }
 .person .role {
-  font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint);
-  margin: 0 0 .85rem; line-height: 1.45;
+  font-family: var(--sans); font-size: .82rem; color: var(--accent);
+  margin: 0 0 .9rem; line-height: 1.5;
 }
-.person .bio { font-size: .96rem; line-height: 1.6; color: var(--ink-soft); margin: 0 0 .9rem; }
-.person .links { font-family: var(--sans); font-size: .8125rem; margin: auto 0 0; display: flex; gap: 1rem; flex-wrap: wrap; }
+.person .bio { font-size: .95rem; line-height: 1.6; color: var(--ink-soft); margin: 0 0 1.1rem; }
+.person .links { font-family: var(--sans); font-size: .82rem; margin: auto 0 0; display: flex; gap: .5rem; flex-wrap: wrap; }
 
 /* ==========================================================================
    Rubric page
    ========================================================================== */
 
-.axis { margin-top: clamp(3.5rem, 7vw, 5rem); scroll-margin-top: 90px; }
-.axis-head { border-top: 2px solid var(--axis-c, var(--rule)); padding-top: 1.1rem; margin-bottom: 1.6rem; }
+.axis {
+  margin-top: clamp(2.5rem, 5vw, 3.5rem); scroll-margin-top: 100px;
+  background: var(--paper); border: 1px solid var(--rule);
+  border-top: 3px solid var(--axis-c, var(--rule));
+  padding: clamp(1.4rem, 3.5vw, 2.6rem);
+}
+.axis-head { padding-top: 0; margin-bottom: 1.6rem; }
 .axis-head .label { color: var(--axis-c); display: block; margin-bottom: .5rem; }
-.axis-head h2 { margin: 0 0 .5em; }
+.axis-head h2 { margin: 0 0 .45em; }
 .axis-head .axis-def { max-width: 62ch; color: var(--ink-soft); margin: 0; }
 .axis-1 { --axis-c: var(--axis-1); }
 .axis-2 { --axis-c: var(--axis-2); }
@@ -247,84 +339,102 @@ main section + nav { margin-top: clamp(3rem, 6.5vw, 5rem); }
 .criterion {
   border-top: 1px solid var(--rule-soft);
   padding: 1.6rem 0 .4rem;
-  scroll-margin-top: 90px;
+  scroll-margin-top: 100px;
 }
 .criterion h3 {
-  margin: 0 0 .4rem; font-size: 1.06rem;
-  display: flex; gap: .6rem; align-items: baseline; flex-wrap: wrap;
+  margin: 0 0 .4rem; font-size: 1.45rem;
+  display: flex; gap: .7rem; align-items: baseline; flex-wrap: wrap;
 }
 .criterion h3 .num {
-  font-family: var(--sans); font-size: .75rem; font-weight: 600;
-  color: var(--axis-c); letter-spacing: .04em; flex: none;
+  font-family: var(--data); font-size: .72rem; font-weight: 600;
+  color: var(--axis-c); letter-spacing: .03em; flex: none;
   font-variant-numeric: tabular-nums;
+  border: 1px solid currentColor; border-radius: 999px; padding: .05rem .5rem;
+  position: relative; top: -.2em;
 }
-.criterion .q { color: var(--ink-soft); max-width: 62ch; margin: 0 0 1rem; font-size: .99rem; }
+.criterion .q { color: var(--ink-soft); max-width: 62ch; margin: 0 0 1rem; font-size: 1rem; }
 
 .anchors { list-style: none; margin: 0 0 .5rem; padding: 0; display: grid; gap: .3rem; max-width: 66ch; }
 .anchors li {
   display: grid; grid-template-columns: 3.1rem 1fr; gap: .85rem; align-items: baseline;
-  font-family: var(--sans); font-size: .85rem; line-height: 1.55; color: var(--ink-soft);
+  font-family: var(--sans); font-size: .9rem; line-height: 1.55; color: var(--ink-soft);
   padding: .32rem 0;
 }
 .anchors .v {
-  font-weight: 600; font-variant-numeric: tabular-nums; text-align: right;
+  font-family: var(--data); font-weight: 600; font-variant-numeric: tabular-nums; text-align: right;
   color: var(--ink); background: var(--axis-bg-c, var(--paper-2));
-  border-radius: 3px; padding: .1rem .4rem; font-size: .8rem;
+  border-radius: 999px; padding: .08rem .5rem; font-size: .78rem;
 }
 .axis-1 .anchors .v { background: var(--axis-1-bg); }
 .axis-2 .anchors .v { background: var(--axis-2-bg); }
 .axis-3 .anchors .v { background: var(--axis-3-bg); }
 
 .changed {
-  font-family: var(--sans); font-size: .75rem; font-weight: 600;
-  letter-spacing: .04em; text-transform: uppercase;
+  font-family: var(--sans); font-size: .72rem; font-weight: 600;
+  letter-spacing: .03em; text-transform: uppercase;
   color: var(--flag); border: 1px solid var(--flag-rule); background: var(--flag-bg);
-  border-radius: 999px; padding: .05rem .5rem; flex: none;
+  border-radius: 999px; padding: .05rem .55rem; flex: none;
 }
 .provenance {
-  font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint);
+  font-family: var(--sans); font-size: .85rem; color: var(--ink-faint);
   margin: .75rem 0 0; max-width: 62ch; line-height: 1.55;
 }
 
 /* Contents list on the rubric page */
-.toc { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-.toc > li { border-top: 2px solid var(--axis-c); padding-top: .8rem; }
-.toc .label { display: block; margin-bottom: .5rem; color: var(--axis-c); }
-.toc ol { list-style: none; padding: 0; margin: 0; font-family: var(--sans); font-size: .85rem; display: grid; gap: .3rem; }
+.toc { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.toc > li {
+  background: var(--paper); border: 1px solid var(--rule);
+  border-top: 3px solid var(--axis-c); padding: 1.1rem 1.25rem 1.25rem;
+}
+.toc .label { display: block; margin-bottom: .55rem; color: var(--axis-c); }
+.toc ol { list-style: none; padding: 0; margin: 0; font-family: var(--sans); font-size: .9rem; display: grid; gap: .35rem; }
 .toc ol a { text-decoration: none; color: var(--ink-soft); }
-.toc ol a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: .18em; }
+.toc ol a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: .18em; }
 
 /* ==========================================================================
-   Framework list
+   Framework list — two-up cards
    ========================================================================== */
 
-.frameworks { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 0; }
-.frameworks li { border-top: 1px solid var(--rule-soft); padding: 1.35rem 0; }
-.frameworks li:last-child { border-bottom: 1px solid var(--rule-soft); }
-.frameworks h3 { margin: 0 0 .3rem; font-size: 1.05rem; }
-.frameworks .fw-meta { font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint); margin: 0 0 .55rem; }
-.frameworks p { font-size: .95rem; color: var(--ink-soft); margin: 0 0 .6rem; max-width: 66ch; }
-.frameworks .srcs { font-family: var(--sans); font-size: .8125rem; display: flex; gap: .35rem 1.1rem; flex-wrap: wrap; margin: 0; }
+.frameworks {
+  list-style: none; padding: 0; margin: 2rem 0 0;
+  display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+}
+.frameworks li {
+  background: var(--paper); border: 1px solid var(--rule);
+  padding: 1.5rem 1.6rem 1.6rem; display: flex; flex-direction: column;
+}
+.frameworks h3 { margin: 0 0 .35rem; font-size: 1.55rem; }
+.frameworks .fw-meta { font-family: var(--sans); font-size: .84rem; color: var(--accent); margin: 0 0 .8rem; }
+.frameworks p { font-size: .95rem; color: var(--ink-soft); margin: 0 0 .9rem; max-width: 66ch; }
+.frameworks .srcs { font-family: var(--sans); font-size: .82rem; display: flex; gap: .5rem; flex-wrap: wrap; margin: auto 0 0; padding-top: .3rem; }
 
 /* ==========================================================================
    Score summary cards
    ========================================================================== */
 
 .summary {
-  display: grid; gap: 1px; margin: 2rem 0 0;
+  display: grid; gap: 1.25rem; margin: 2rem 0 0;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  background: var(--rule-soft); border: 1px solid var(--rule-soft);
 }
-.summary-card { background: var(--paper); padding: 1.15rem 1.2rem 1.25rem; }
-.summary-card h3 { margin: 0 0 .1rem; font-size: .98rem; line-height: 1.3; min-height: 2.6em; }
+.summary-card {
+  background: var(--paper) no-repeat center / 100% 100%;
+  border: 1px solid var(--rule);
+  padding: 1.5rem 1.35rem 1.5rem;
+}
+.summary-card:nth-child(5n+1) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 420' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%239CCBF2' stroke-width='1'%3E%3Cpath d='M-10 70 C 90 60, 200 70, 310 95'/%3E%3Cpath d='M-10 330 C 120 300, 220 300, 310 270'/%3E%3Cpath d='M230 -10 C 300 120, 260 300, 120 430'/%3E%3C/g%3E%3C/svg%3E"); }
+.summary-card:nth-child(5n+2) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 420' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23F2B3B0' stroke-width='1'%3E%3Cpath d='M-10 70 C 90 60, 200 70, 310 95'/%3E%3Cpath d='M-10 330 C 120 300, 220 300, 310 270'/%3E%3Cpath d='M230 -10 C 300 120, 260 300, 120 430'/%3E%3C/g%3E%3C/svg%3E"); }
+.summary-card:nth-child(5n+3) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 420' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23A5DCC6' stroke-width='1'%3E%3Cpath d='M-10 70 C 90 60, 200 70, 310 95'/%3E%3Cpath d='M-10 330 C 120 300, 220 300, 310 270'/%3E%3Cpath d='M230 -10 C 300 120, 260 300, 120 430'/%3E%3C/g%3E%3C/svg%3E"); }
+.summary-card:nth-child(5n+4) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 420' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23F2D29E' stroke-width='1'%3E%3Cpath d='M-10 70 C 90 60, 200 70, 310 95'/%3E%3Cpath d='M-10 330 C 120 300, 220 300, 310 270'/%3E%3Cpath d='M230 -10 C 300 120, 260 300, 120 430'/%3E%3C/g%3E%3C/svg%3E"); }
+.summary-card:nth-child(5n+5) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 420' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23C8C4F0' stroke-width='1'%3E%3Cpath d='M-10 70 C 90 60, 200 70, 310 95'/%3E%3Cpath d='M-10 330 C 120 300, 220 300, 310 270'/%3E%3Cpath d='M230 -10 C 300 120, 260 300, 120 430'/%3E%3C/g%3E%3C/svg%3E"); }
+.summary-card h3 { margin: 0 0 .25rem; font-size: 1.28rem; line-height: 1.15; min-height: 2.35em; overflow-wrap: break-word; }
 @media (max-width: 560px) { .summary-card h3 { min-height: 0; } }
-.summary-card .fw-meta { font-family: var(--sans); font-size: .75rem; color: var(--ink-faint); margin: 0 0 .95rem; }
-.mini { display: grid; gap: .55rem; margin: 0; }
-.mini > div { display: grid; grid-template-columns: 1fr 2.4rem; gap: .5rem; align-items: center; }
-.mini .k { font-family: var(--sans); font-size: .7rem; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; }
-.mini .v { font-family: var(--sans); font-size: .95rem; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
-.mini .track { grid-column: 1 / -1; height: 4px; border-radius: 2px; background: var(--rule-soft); overflow: hidden; margin-top: -.35rem; }
-.mini .fill { display: block; height: 100%; border-radius: 2px; width: 0; }
+.summary-card .fw-meta { font-family: var(--sans); font-size: .8rem; color: var(--accent); margin: 0 0 1.1rem; }
+.mini { display: grid; gap: .6rem; margin: 0; }
+.mini > div { display: grid; grid-template-columns: 1fr 2.6rem; gap: .5rem; align-items: center; }
+.mini .k { font-family: var(--sans); font-size: .74rem; color: var(--ink-faint); font-weight: 500; }
+.mini .v { font-family: var(--data); font-size: 1rem; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.mini .track { grid-column: 1 / -1; height: 4px; background: var(--rule-soft); overflow: hidden; margin-top: -.35rem; }
+.mini .fill { display: block; height: 100%; width: 0; }
 .mini .a1 .fill { background: var(--axis-1); } .mini .a1 .v { color: var(--axis-1); }
 .mini .a2 .fill { background: var(--axis-2); } .mini .a2 .v { color: var(--axis-2); }
 .mini .a3 .fill { background: var(--axis-3); } .mini .a3 .v { color: var(--axis-3); }
@@ -335,23 +445,26 @@ main section + nav { margin-top: clamp(3rem, 6.5vw, 5rem); }
 
 .table-wrap {
   margin: 1.75rem 0 0; overflow-x: auto;
-  border: 1px solid var(--rule); border-radius: 4px;
+  background: var(--paper); border: 1px solid var(--rule);
   -webkit-overflow-scrolling: touch;
 }
-table.matrix { border-collapse: collapse; width: 100%; min-width: 720px; font-family: var(--sans); font-size: .85rem; }
-table.matrix caption { caption-side: top; text-align: left; padding: 0 0 .9rem; font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint); }
-table.matrix th, table.matrix td { padding: .58rem .7rem; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--rule-soft); }
+table.matrix { border-collapse: collapse; width: 100%; min-width: 720px; font-family: var(--data); font-size: .85rem; }
+table.matrix caption {
+  caption-side: top; text-align: left; padding: 1rem 1.2rem .9rem;
+  font-family: var(--sans); font-size: .85rem; color: var(--ink-faint);
+}
+table.matrix th, table.matrix td { padding: .62rem .75rem; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--rule-soft); }
 table.matrix thead th {
   position: sticky; top: 0; z-index: 2;
-  background: var(--paper-2); border-bottom: 1px solid var(--rule);
-  font-weight: 600; font-size: .75rem; letter-spacing: .02em; line-height: 1.35;
-  vertical-align: bottom; white-space: normal;
+  background: var(--band); border-bottom: 1px solid var(--rule);
+  font-family: var(--sans); font-weight: 600; font-size: .8rem; letter-spacing: 0; line-height: 1.35;
+  vertical-align: bottom; white-space: normal; color: var(--ink);
 }
-table.matrix thead th:first-child { min-width: 230px; }
+table.matrix thead th:first-child { min-width: 230px; padding-left: 1.2rem; }
 table.matrix tbody th {
   font-weight: 450; color: var(--ink); text-align: left; min-width: 230px;
   background: var(--paper); position: sticky; left: 0; z-index: 1;
-  border-right: 1px solid var(--rule-soft);
+  border-right: 1px solid var(--rule-soft); padding-left: 1.2rem;
 }
 table.matrix tbody th a { text-decoration: none; color: inherit; }
 table.matrix tbody th a:hover { text-decoration: underline; text-underline-offset: .18em; color: var(--accent); }
@@ -363,13 +476,14 @@ table.matrix td.score {
   font-variant-numeric: tabular-nums; font-weight: 550; text-align: right;
   position: relative; white-space: nowrap;
 }
+table.matrix td.score:last-child { padding-right: 1.2rem; }
 /* The "→ 60" shown on reverse-coded cells: the value that enters the mean. */
 table.matrix td.score .inv {
   font-weight: 500; font-size: .78em; color: var(--ink-faint); margin-left: .3em;
 }
 table.matrix td.score .bar {
   position: absolute; left: 0; bottom: 0; height: 3px; width: 0;
-  background: var(--axis-c, var(--ink-faint)); opacity: .75;
+  background: var(--axis-c, var(--ink-faint)); opacity: .7;
 }
 table.matrix tbody.g1 { --axis-c: var(--axis-1); }
 table.matrix tbody.g2 { --axis-c: var(--axis-2); }
@@ -377,31 +491,32 @@ table.matrix tbody.g3 { --axis-c: var(--axis-3); }
 
 table.matrix tr.group-head th {
   background: var(--paper-2); position: sticky; left: 0;
-  font-family: var(--sans); font-size: .7rem; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--axis-c);
+  font-family: var(--sans); font-size: .78rem; font-weight: 600;
+  letter-spacing: 0; text-transform: none; color: var(--axis-c);
   border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
   padding-top: .7rem; padding-bottom: .7rem;
 }
 table.matrix tr.group-head td { background: var(--paper-2); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 
 table.matrix tr.mean-row th, table.matrix tr.mean-row td {
-  font-weight: 700; background: color-mix(in srgb, var(--paper-2) 65%, var(--paper));
+  font-weight: 700; background: color-mix(in srgb, var(--paper-2) 60%, var(--paper));
   border-bottom: 1px solid var(--rule);
 }
 table.matrix tr.mean-row td.score { color: var(--axis-c); font-size: .95rem; }
 table.matrix tr.mean-row th { font-weight: 700; }
 
 table.matrix th.sortable { cursor: pointer; user-select: none; }
+table.matrix th.sortable:hover { color: var(--accent); }
 table.matrix th.sortable::after { content: "↕"; opacity: .3; margin-left: .35rem; font-size: .8em; }
 table.matrix th.sortable[aria-sort="ascending"]::after  { content: "↑"; opacity: .9; }
 table.matrix th.sortable[aria-sort="descending"]::after { content: "↓"; opacity: .9; }
 
 .scale-key {
   display: flex; gap: 1.4rem; flex-wrap: wrap; align-items: center;
-  font-family: var(--sans); font-size: .78rem; color: var(--ink-faint);
-  margin: .9rem 0 0;
+  font-family: var(--sans); font-size: .82rem; color: var(--ink-faint);
+  margin: 1rem 0 0;
 }
-.scale-key .swatch { display: inline-block; width: .72rem; height: .72rem; border-radius: 2px; margin-right: .4rem; vertical-align: -1px; }
+.scale-key .swatch { display: inline-block; width: .72rem; height: .72rem; margin-right: .4rem; vertical-align: -1px; }
 
 /* ==========================================================================
    Figures
@@ -410,52 +525,50 @@ table.matrix th.sortable[aria-sort="descending"]::after { content: "↓"; opacit
 figure { margin: 2.5rem 0 0; }
 figure img {
   display: block; width: 100%; height: auto;
-  border: 1px solid var(--rule); border-radius: 4px; background: var(--paper-2);
+  background: var(--paper); border: 1px solid var(--rule);
+  padding: clamp(.5rem, 1.5vw, 1rem);
 }
 figcaption {
-  font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint);
-  line-height: 1.6; margin-top: .75rem; max-width: 70ch;
+  font-family: var(--sans); font-size: .85rem; color: var(--ink-faint);
+  line-height: 1.6; margin-top: .85rem; max-width: 70ch;
 }
-figcaption b { color: var(--ink-soft); font-weight: 600; }
-
-/* The figures are generated with a light background. In dark mode they read as
-   printed plates rather than glowing panels; this takes the edge off. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) figure img { filter: brightness(.88) contrast(1.02); }
-}
+figcaption b { color: var(--accent); font-weight: 600; }
 
 /* ==========================================================================
    Citation block
    ========================================================================== */
 
 .cite {
-  border: 1px solid var(--rule); border-radius: 4px;
-  padding: 1.15rem 1.25rem; margin: 2.5rem 0 0; background: var(--paper-2);
+  background: var(--band); border: 1px solid var(--rule);
+  padding: 1.3rem 1.5rem; margin: 2.5rem 0 0;
 }
 .cite .label { display: block; margin-bottom: .6rem; }
-.cite p { font-family: var(--sans); font-size: .85rem; line-height: 1.6; margin: 0; color: var(--ink-soft); }
+.cite p { font-family: var(--sans); font-size: .9rem; line-height: 1.6; margin: 0; color: var(--ink-soft); }
 
 /* ==========================================================================
    Footer
    ========================================================================== */
 
 .site-footer {
-  border-top: 1px solid var(--rule); padding-block: 2.5rem 3.5rem;
-  font-family: var(--sans); font-size: .8125rem; color: var(--ink-faint);
+  background: var(--band); border-top: 1px solid var(--rule);
+  padding-block: 3rem 3.5rem;
+  font-family: var(--sans); font-size: .875rem; color: var(--ink-faint);
 }
 .site-footer .wrap { display: flex; gap: 1.5rem 2.5rem; flex-wrap: wrap; align-items: flex-start; }
 .site-footer p { margin: 0 0 .4rem; max-width: 46ch; line-height: 1.6; }
-.site-footer nav { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-left: auto; }
-.site-footer a { color: var(--ink-soft); }
+.site-footer nav { display: flex; gap: .4rem 1.5rem; flex-wrap: wrap; margin-left: auto; }
+.site-footer a { color: var(--ink); text-decoration: none; }
+.site-footer a:hover { color: var(--accent); text-decoration: underline; }
 
 /* ==========================================================================
    Small screens
    ========================================================================== */
 
-@media (max-width: 640px) {
-  .site-header .wrap { min-height: 0; padding-block: .85rem; row-gap: .5rem; }
-  .brand { margin-right: 0; width: 100%; }
-  .site-nav { gap: 1.1rem; }
+@media (max-width: 760px) {
+  .site-header .wrap { min-height: 0; padding-block: .8rem; row-gap: .55rem; }
+  .brand { margin-right: 0; width: 100%; font-size: 1.35rem; }
+  .site-nav { gap: .3rem 1.1rem; font-size: .88rem; }
+  .site-nav a:last-child { padding: .35rem .85rem; }
   table.matrix tbody th, table.matrix thead th:first-child { min-width: 180px; }
   .site-footer nav { margin-left: 0; }
 }
@@ -463,5 +576,6 @@ figcaption b { color: var(--ink-soft); font-weight: 600; }
 @media print {
   .site-header, .site-footer nav, .skip-link { display: none; }
   body { background: #fff; color: #000; font-size: 10.5pt; }
+  .opener::before { display: none; }
   .table-wrap { overflow: visible; }
 }
