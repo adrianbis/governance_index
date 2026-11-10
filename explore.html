@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>3D map — AI Governance Design Index</title>
+<meta name="description" content="An interactive 3D map placing five international AI governance frameworks by power concentration, reversibility and efficiency.">
+
+<link rel="canonical" href="https://example.org/explore.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3D map — AI Governance Design Index">
+<meta property="og:description" content="An interactive 3D map placing five international AI governance frameworks by power concentration, reversibility and efficiency.">
+<meta property="og:url" content="https://example.org/explore.html">
+<meta property="og:image" content="https://example.org/assets/img/social-card.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Source+Serif+4:opsz,wght@8..60,400..650&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+
+<!-- ==========================================================================
+     Styles for the 3D map only. Colours come from assets/style.css, so if you
+     change the site's colours there, this page follows automatically.
+     ========================================================================== -->
+<style>
+.space { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 1.25rem; align-items: start; margin: 0; }
+@media (max-width: 880px) { .space { grid-template-columns: 1fr; } }
+
+.space-stage { position: relative; border: 1px solid var(--rule); border-radius: 4px; background: var(--paper); overflow: hidden; }
+.space-toolbar { display: flex; flex-wrap: wrap; gap: .4rem; padding: .6rem; border-bottom: 1px solid var(--rule-soft); background: var(--paper-2); }
+.space-toolbar .sep { flex: 1; }
+.space button {
+  font-family: var(--sans); font-size: .78rem; line-height: 1.4; color: var(--ink-soft);
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 999px;
+  padding: .28rem .72rem; cursor: pointer; white-space: nowrap;
+}
+.space button:hover { color: var(--ink); border-color: var(--ink-faint); }
+.space button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.space .iconbtn { width: 2rem; padding-inline: 0; text-align: center; }
+
+.space canvas { display: block; width: 100%; height: clamp(380px, 60vw, 600px); max-height: 72vh; touch-action: none; cursor: grab; outline: none; }
+.space canvas:active { cursor: grabbing; }
+.space canvas:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+
+.space-hint {
+  position: absolute; left: .75rem; bottom: .6rem; pointer-events: none;
+  font-family: var(--sans); font-size: .72rem; color: var(--ink-faint);
+  background: color-mix(in srgb, var(--paper) 85%, transparent); padding: .1rem .4rem; border-radius: 3px;
+}
+@media (max-width: 600px) { .space-hint { display: none; } }
+.space-tip {
+  position: absolute; pointer-events: none; white-space: nowrap; opacity: 0; transition: opacity .12s;
+  font-family: var(--sans); font-size: .78rem; line-height: 1.45;
+  background: var(--ink); color: var(--paper); padding: .45rem .6rem; border-radius: 4px;
+  transform: translate(-50%, calc(-100% - 14px));
+}
+.space-tip b { display: block; font-size: .84rem; }
+.space-tip.show { opacity: 1; }
+.space-loading { position: absolute; inset: 3.2rem 0 0; display: grid; place-items: center; font-family: var(--sans); font-size: .85rem; color: var(--ink-faint); }
+
+.space-panel { font-family: var(--sans); border: 1px solid var(--rule); border-radius: 4px; padding: 1rem 1.05rem; background: var(--paper); }
+.space-panel > .label { display: block; margin-bottom: .55rem; }
+.space-legend { list-style: none; margin: 0 0 1rem; padding: 0; }
+.space-legend li { display: flex; align-items: center; gap: .5rem; padding: .12rem 0; }
+.space-legend input { margin: 0; accent-color: var(--ink); }
+.space .space-legend button {
+  flex: 1; display: flex; align-items: center; gap: .55rem; text-align: left;
+  border: 0; border-radius: 3px; background: transparent; padding: .3rem .4rem; font-size: .84rem; color: var(--ink);
+}
+.space .space-legend button:hover { background: var(--paper-2); }
+.space .space-legend button.sel { background: var(--paper-2); font-weight: 600; }
+.space .space-legend button:disabled { color: var(--ink-faint); cursor: default; }
+.space-legend .sw { width: .7rem; height: .7rem; border-radius: 50%; flex: none; }
+.space-legend .nums { margin-left: auto; font-size: .72rem; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+.space-detail { border-top: 1px solid var(--rule-soft); padding-top: .9rem; font-size: .84rem; }
+.space-detail h3 { font-size: .98rem; margin: 0 0 .1rem; }
+.space-detail .fw-meta { font-size: .75rem; color: var(--ink-faint); margin: 0 0 .9rem; }
+.space-detail .near { font-size: .78rem; color: var(--ink-soft); margin: .9rem 0 0; line-height: 1.5; }
+.space-feat { width: 100%; border-collapse: collapse; margin-top: .8rem; font-size: .76rem; }
+.space-feat td { padding: .26rem 0; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+.space-feat td:last-child { text-align: right; white-space: nowrap; padding-left: .5rem; font-variant-numeric: tabular-nums; font-weight: 600; }
+.space-feat .grp td { padding-top: .7rem; font-size: .66rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.space-feat .num { color: var(--ink-faint); font-weight: 600; margin-right: .3rem; font-variant-numeric: tabular-nums; }
+.space-feat a { text-decoration: none; }
+.space-feat a:hover { text-decoration: underline; }
+.space-feat .raw { color: var(--ink-faint); font-weight: 500; }
+
+.space figcaption { grid-column: 1 / -1; margin-top: 0; }
+figure.space ~ section { margin-top: clamp(3rem, 6.5vw, 5rem); }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="mark" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="1" y="3"  width="18" height="3.4" rx="1" fill="#2F4B7C"/>
+          <rect x="1" y="8.3" width="12" height="3.4" rx="1" fill="#9A4636"/>
+          <rect x="1" y="13.6" width="7" height="3.4" rx="1" fill="#6A7A38"/>
+        </svg>
+      </span>
+      AI Governance Design Index
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="index.html">About</a>
+      <a href="rubric.html">The index</a>
+      <a href="frameworks.html">Scores</a>
+      <a href="explore.html" aria-current="page">3D map</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <div class="opener prose-wide">
+      <span class="label">3D map · index version 2.0</span>
+      <h1>The frameworks in index space</h1>
+      <p class="lede">
+        Each framework sits at its three axis averages. Turn the cube to see
+        all three axes at once, or flatten it to any two.
+      </p>
+      <hr class="opener-rule">
+    </div>
+
+    <!-- The draft-coding notice below appears automatically while the Scores
+         page still has its notice. Delete that one and this one goes too. -->
+    <div id="space-notice"></div>
+
+    <figure class="space">
+      <div class="space-stage">
+        <div class="space-toolbar" role="toolbar" aria-label="View controls">
+          <button data-view="iso" aria-pressed="true">3D</button>
+          <button data-view="top" aria-pressed="false"></button>
+          <button data-view="front" aria-pressed="false"></button>
+          <button data-view="side" aria-pressed="false"></button>
+          <span class="sep"></span>
+          <button id="t-shadows" aria-pressed="true" title="Show each framework's shadow on the back walls">Shadows</button>
+          <button id="t-spin" aria-pressed="false">Rotate</button>
+          <button class="iconbtn" id="z-in" aria-label="Zoom in">+</button>
+          <button class="iconbtn" id="z-out" aria-label="Zoom out">&minus;</button>
+          <button id="reset">Reset</button>
+          <button id="png" title="Download the current view as an image">PNG</button>
+        </div>
+        <canvas id="space-canvas" tabindex="0" role="img" aria-label="Interactive 3D scatter plot of the frameworks"></canvas>
+        <div class="space-loading" id="space-loading">Loading scores…</div>
+        <div class="space-tip" id="space-tip"></div>
+        <div class="space-hint">Drag to rotate · scroll or pinch to zoom · shift-drag to pan · click a point</div>
+      </div>
+
+      <aside class="space-panel">
+        <span class="label">Frameworks</span>
+        <ul class="space-legend" id="space-legend"></ul>
+        <div class="space-detail" id="space-detail"></div>
+      </aside>
+
+      <figcaption id="space-caption"></figcaption>
+    </figure>
+
+    <p class="provenance" id="space-source" hidden></p>
+
+    <section class="prose">
+      <h2>Reading the map</h2>
+      <p>
+        The floor of the cube is power concentration against reversibility;
+        the height is efficiency. The faint dots on the back walls are each
+        framework's shadow: where it sits on that pair of axes alone.
+      </p>
+      <p>
+        The three flat views are exact two-axis charts. In the turning view,
+        perspective makes positions approximate, so read exact numbers from
+        the flat views, the side panel or the
+        <a href="frameworks.html">Scores page</a>.
+      </p>
+      <p>
+        “Closest” and “farthest” in the side panel are straight-line distances
+        across all three axes, with each axis weighted equally. The map is drawn
+        from the Scores table each time the page loads, so the two cannot
+        disagree.
+      </p>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <p>
+        AI Governance Design Index, version 2.0. Text and data licensed
+        <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener">CC&nbsp;BY&nbsp;4.0</a>;
+        site code licensed MIT.
+      </p>
+      <p>&copy; <span data-year>2026</span> the authors.</p>
+    </div>
+    <nav aria-label="Footer">
+      <a href="index.html">About</a>
+      <a href="rubric.html">The index</a>
+      <a href="frameworks.html">Scores</a>
+      <a href="explore.html">3D map</a>
+      <a href="methodology.html">Methodology notes</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/site.js" defer></script>
+
+<script>
+/* ==========================================================================
+   3D map
+   --------------------------------------------------------------------------
+   You do not need to edit this to change any scores. The map reads the score
+   table on frameworks.html every time it loads, so a score you change there
+   shows up here automatically. A new framework added to that table (with its
+   summary card) appears here too.
+
+   The only things you might want to change are the two settings just below.
+   ========================================================================== */
+
+/* Dot colour for each framework, keyed by the data-fw code used in the table.
+   A framework without an entry here gets a spare colour automatically. */
+var FRAMEWORK_COLOURS = {
+  oecd:  "#0072B2",
+  eu:    "#D55E00",
+  un:    "#009E73",
+  au:    "#E69F00",
+  asean: "#CC79A7"
+};
+
+/* A saved copy of the scores, used ONLY when the live table cannot be read —
+   which is what happens if you double-click this file on your own computer,
+   because browsers block one local file from reading another. On the live
+   site it is never used, so you do not need to keep it up to date. */
+var SAVED_COPY = {
+  date: "10 November 2026",
+  notice: "Draft coding — awaiting author review",
+  frameworks: [
+    { id: "oecd",  short: "OECD Principles", name: "OECD AI Principles",         meta: "Adopted 2019" },
+    { id: "eu",    short: "EU AI Act",       name: "EU AI Act",                  meta: "Adopted 2024" },
+    { id: "un",    short: "UNESCO Rec.",     name: "UNESCO Recommendation",      meta: "Adopted 2021" },
+    { id: "au",    short: "AU Strategy",     name: "AU Continental AI Strategy", meta: "Endorsed 2024" },
+    { id: "asean", short: "ASEAN Guide",     name: "ASEAN Guide",                meta: "Adopted 2024" }
+  ],
+  //       id     name                             link             reverse  oecd eu  un  au  asean
+  axes: [
+    { n: 1, label: "Power concentration", rows: [
+      ["1.1", "Decision-making concentration", "rubric.html#pc-1", false, [15, 75, 30, 20, 5]],
+      ["1.2", "Agenda-setting concentration",  "rubric.html#pc-2", false, [45, 90, 60, 55, 30]],
+      ["1.3", "Resource concentration",        "rubric.html#pc-3", false, [35, 70, 35, 45, 20]],
+      ["1.4", "Technical concentration",       "rubric.html#pc-4", false, [55, 80, 70, 45, 40]] ] },
+    { n: 2, label: "Reversibility", rows: [
+      ["2.1", "Exit possibility",              "rubric.html#rv-1", false, [100, 0, 95, 100, 100]],
+      ["2.2", "Amendment difficulty",          "rubric.html#rv-2", true,  [60, 45, 30, 35, 40]],
+      ["2.3", "Sunset mechanisms",             "rubric.html#rv-3", false, [50, 50, 55, 65, 35]],
+      ["2.4", "Path dependency",               "rubric.html#rv-4", true,  [30, 90, 40, 25, 15]] ] },
+    { n: 3, label: "Efficiency", rows: [
+      ["3.1", "Deliberation speed",            "rubric.html#ef-1", false, [80, 45, 50, 65, 75]],
+      ["3.2", "Binding implementation",        "rubric.html#ef-2", false, [10, 75, 15, 5, 0]],
+      ["3.3", "Optimised coordination",        "rubric.html#ef-3", false, [80, 50, 45, 70, 75]],
+      ["3.4", "Compliance verification",       "rubric.html#ef-4", false, [40, 70, 50, 25, 5]] ] }
+  ]
+};
+
+/* ==========================================================================
+   Below here: reading the table and drawing. No need to touch it.
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var SPARE = ["#56B4E9", "#7A5195", "#8C6D31", "#3A8F5C", "#B04A7A", "#4D4D4D"];
+
+  /* ---------- reading the Scores table ---------- */
+
+  function readMatrix(doc) {
+    var table = doc.querySelector("table.matrix");
+    if (!table) throw new Error("no score table found");
+    var heads = Array.from(table.querySelectorAll("thead th")).slice(1).map(function (t) { return t.textContent.trim(); });
+    var axes = Array.from(table.querySelectorAll("tbody[data-axis]")).map(function (body) {
+      var gh = body.querySelector("tr.group-head th");
+      var label = (gh ? gh.textContent : "").replace(/^\s*Axis\s*\d+\s*[·:\-–]\s*/i, "").trim();
+      var features = Array.from(body.querySelectorAll("tr")).filter(function (r) {
+        return !r.classList.contains("group-head") && !r.classList.contains("mean-row");
+      }).map(function (r) {
+        var th = r.querySelector("th"), num = th.querySelector(".num"), a = th.querySelector("a");
+        var id = num ? num.textContent.trim() : "";
+        var scores = {};
+        r.querySelectorAll("td.score[data-fw]").forEach(function (td) {
+          scores[td.getAttribute("data-fw")] = parseFloat(td.getAttribute("data-score"));
+        });
+        return {
+          id: id,
+          name: a ? a.textContent.trim() : th.textContent.replace(id, "").trim(),
+          href: a ? a.getAttribute("href") : "",
+          reverse: r.getAttribute("data-reverse") === "true",
+          scores: scores
+        };
+      });
+      return { n: parseInt(body.getAttribute("data-axis"), 10), label: label, features: features };
+    });
+    var firstRow = table.querySelector("tbody[data-axis] tr:not(.group-head)");
+    var codes = Array.from(firstRow.querySelectorAll("td.score[data-fw]")).map(function (td) { return td.getAttribute("data-fw"); });
+    var frameworks = codes.map(function (id, i) {
+      var card = doc.querySelector('.summary-card[data-fw="' + id + '"]');
+      var h = card && card.querySelector("h3"), m = card && card.querySelector(".fw-meta");
+      return { id: id, short: heads[i] || id, name: h ? h.textContent.trim() : (heads[i] || id), meta: m ? m.textContent.trim() : "" };
+    });
+    var notice = doc.querySelector(".notice .label");
+    if (axes.length !== 3 || !frameworks.length) throw new Error("unexpected table shape");
+    return { axes: axes, frameworks: frameworks, notice: notice ? notice.textContent.trim() : "" };
+  }
+
+  function fromSavedCopy() {
+    var ids = SAVED_COPY.frameworks.map(function (f) { return f.id; });
+    return {
+      notice: SAVED_COPY.notice,
+      frameworks: SAVED_COPY.frameworks.map(function (f) { return Object.assign({}, f); }),
+      axes: SAVED_COPY.axes.map(function (a) {
+        return { n: a.n, label: a.label, features: a.rows.map(function (r) {
+          var scores = {}; ids.forEach(function (id, i) { scores[id] = r[4][i]; });
+          return { id: r[0], name: r[1], href: r[2], reverse: r[3], scores: scores };
+        }) };
+      })
+    };
+  }
+
+  function load() {
+    return fetch("frameworks.html", { cache: "no-cache" })
+      .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.text(); })
+      .then(function (html) { return { data: readMatrix(new DOMParser().parseFromString(html, "text/html")), live: true }; })
+      .catch(function (err) { return { data: fromSavedCopy(), live: false, why: err }; });
+  }
+
+  /* ---------- state ---------- */
+
+  var AXES = [], FRAMEWORKS = [];
+  var entered = function (ft, id) { return ft.reverse ? 100 - ft.scores[id] : ft.scores[id]; };
+  var r0 = function (v) { return Math.round(v); };
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var toCube = function (v) { return v / 50 - 1; };
+  // World axes: x = axis 1, y (vertical) = axis 3, z = axis 2
+  var AX_OF = [0, 2, 1];
+  var worldPos = function (f) { return [toCube(f.means[0]), toCube(f.means[2]), toCube(f.means[1])]; };
+  var shortLabel = function (i) { return AXES[i].label.split(" ")[0]; };
+
+  function prepare(data) {
+    AXES = data.axes; FRAMEWORKS = data.frameworks;
+    var spare = 0;
+    FRAMEWORKS.forEach(function (f) {
+      f.color = FRAMEWORK_COLOURS[f.id] || SPARE[spare++ % SPARE.length];
+      f.means = AXES.map(function (a) {
+        var vals = a.features.map(function (ft) { return entered(ft, f.id); });
+        return vals.every(isFinite) ? vals.reduce(function (s, v) { return s + v; }, 0) / vals.length : NaN;
+      });
+      f.complete = f.means.every(isFinite);
+      f.visible = f.complete;
+    });
+  }
+
+  /* ---------- canvas ---------- */
+
+  var canvas = document.getElementById("space-canvas");
+  var ctx = canvas.getContext("2d");
+  var tip = document.getElementById("space-tip");
+  var W = 0, H = 0, DPR = 1, theme = {}, ready = false;
+
+  function readTheme() {
+    var cs = getComputedStyle(document.documentElement);
+    ["--paper", "--paper-2", "--ink", "--ink-soft", "--ink-faint", "--rule", "--rule-soft", "--sans", "--axis-1", "--axis-2", "--axis-3"]
+      .forEach(function (k) { theme[k] = cs.getPropertyValue(k).trim(); });
+  }
+  function resize() {
+    var r = canvas.getBoundingClientRect();
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = r.height;
+    canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+    requestDraw();
+  }
+
+  var BASE_DIST = 4.6;
+  var VIEWS = {
+    iso:   { yaw: 0.62,         pitch: 0.46,        ortho: 0 },
+    top:   { yaw: 0,            pitch: Math.PI / 2, ortho: 1 },
+    front: { yaw: 0,            pitch: 0,           ortho: 1 },
+    side:  { yaw: -Math.PI / 2, pitch: 0,           ortho: 1 }
+  };
+  var view = { yaw: VIEWS.iso.yaw, pitch: VIEWS.iso.pitch, ortho: 0, dist: BASE_DIST, panX: 0, panY: 0 };
+  var PITCH_MIN = -0.15, PITCH_MAX = Math.PI / 2;
+  var selected = null, hovered = null, showShadows = true, spinning = false;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function rotate(p) {
+    var cy = Math.cos(view.yaw), sy = Math.sin(view.yaw);
+    var x1 = p[0] * cy - p[2] * sy, z1 = p[0] * sy + p[2] * cy;
+    var cp = Math.cos(view.pitch), sp = Math.sin(view.pitch);
+    return [x1, p[1] * cp + z1 * sp, -p[1] * sp + z1 * cp];
+  }
+  function project(p) {
+    var q = rotate(p);
+    var depth = q[2] + view.dist;
+    var F = Math.min(W, H) * 0.98;
+    var persp = F / Math.max(depth, 0.3);
+    var orth = F * 0.37 * (BASE_DIST / view.dist);
+    var k = persp + (orth - persp) * view.ortho;
+    return { x: W / 2 + view.panX + q[0] * k, y: H * 0.48 + view.panY - q[1] * k, depth: depth, k: k };
+  }
+  function wallFacing(axis) {
+    var n = [0, 0, 0]; n[axis] = 1;
+    return clamp((Math.abs(rotate(n)[2]) - 0.12) / 0.25, 0, 1);
+  }
+
+  var drawQueued = false;
+  function requestDraw() { if (!drawQueued) { drawQueued = true; requestAnimationFrame(frame); } }
+  function line(a, b, color, width, dash) {
+    ctx.beginPath(); ctx.setLineDash(dash || []); ctx.strokeStyle = color; ctx.lineWidth = width || 1;
+    ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); ctx.setLineDash([]);
+  }
+  function hexA(hex, a) {
+    if (!/^#[0-9a-f]{6}$/i.test(hex)) return hex;
+    var n = parseInt(hex.slice(1), 16);
+    return "rgba(" + (n >> 16 & 255) + "," + (n >> 8 & 255) + "," + (n & 255) + "," + a + ")";
+  }
+
+  function farWalls() {
+    var fx = project([1, 0, 0]).depth >= project([-1, 0, 0]).depth ? 1 : -1;
+    var fz = project([0, 0, 1]).depth >= project([0, 0, -1]).depth ? 1 : -1;
+    return [fx, -1, fz];
+  }
+
+  function drawWall(axis, val) {
+    var others = [0, 1, 2].filter(function (i) { return i !== axis; });
+    var pt = function (u, v) { var p = [0, 0, 0]; p[axis] = val; p[others[0]] = u; p[others[1]] = v; return project(p); };
+    var c = [pt(-1, -1), pt(1, -1), pt(1, 1), pt(-1, 1)];
+    ctx.beginPath(); ctx.moveTo(c[0].x, c[0].y); c.slice(1).forEach(function (q) { ctx.lineTo(q.x, q.y); }); ctx.closePath();
+    ctx.fillStyle = hexA(theme["--paper-2"], 0.7); ctx.fill();
+    [-0.5, 0, 0.5].forEach(function (t) {
+      line(pt(t, -1), pt(t, 1), theme["--rule-soft"]);
+      line(pt(-1, t), pt(1, t), theme["--rule-soft"]);
+    });
+  }
+
+  function edgeTicks(a, b, axisIdx) {
+    var pa = project(a), pb = project(b);
+    var len = Math.hypot(pb.x - pa.x, pb.y - pa.y);
+    var alpha = clamp((len - 40) / 60, 0, 1);
+    if (alpha <= 0) return;
+    var c = project([0, 0, 0]);
+    var mid = { x: (pa.x + pb.x) / 2, y: (pa.y + pb.y) / 2 };
+    var dx = mid.x - c.x, dy = mid.y - c.y, dl = Math.hypot(dx, dy);
+    if (dl < 1) { dx = 0; dy = 1; dl = 1; }
+    dx /= dl; dy /= dl;
+    var align = dx > 0.35 ? "left" : dx < -0.35 ? "right" : "center";
+    var base = dy > 0.35 ? "top" : dy < -0.35 ? "bottom" : "middle";
+    ctx.globalAlpha = alpha;
+    ctx.textAlign = align; ctx.textBaseline = base;
+    ctx.font = "11px " + theme["--sans"]; ctx.fillStyle = theme["--ink-faint"];
+    [0, 25, 50, 75, 100].forEach(function (v) {
+      var t = v / 100;
+      var p = project(a.map(function (ai, i) { return ai + (b[i] - ai) * t; }));
+      line(p, { x: p.x + dx * 4, y: p.y + dy * 4 }, theme["--ink-faint"]);
+      if (v % 50 === 0) ctx.fillText(String(v), p.x + dx * 8, p.y + dy * 8);
+    });
+    ctx.font = "600 12.5px " + theme["--sans"];
+    ctx.fillStyle = theme["--axis-" + AXES[axisIdx].n] || theme["--ink"];
+    var label = AXES[axisIdx].label, tw = ctx.measureText(label).width;
+    var tx = mid.x + dx * 30;
+    var left = align === "left" ? tx : align === "right" ? tx - tw : tx - tw / 2;
+    tx += clamp(left, 6, W - 6 - tw) - left;
+    ctx.fillText(label, tx, clamp(mid.y + dy * 30, 10, H - 10));
+    ctx.globalAlpha = 1;
+  }
+
+  var tween = null;
+  function frame() {
+    drawQueued = false;
+    if (spinning) { view.yaw += 0.004; requestDraw(); }
+    if (tween) stepTween();
+    if (ready) draw();
+  }
+
+  var lastScreen = [];
+  function draw() {
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.fillStyle = theme["--paper"]; ctx.fillRect(0, 0, W, H);
+
+    var fw = farWalls();
+    var near = fw.map(function (v) { return -v; });
+
+    drawWall(1, fw[1]); drawWall(0, fw[0]); drawWall(2, fw[2]);
+
+    [0, 1, 2].forEach(function (i) {
+      var o = [0, 1, 2].filter(function (j) { return j !== i; });
+      [-1, 1].forEach(function (s1) { [-1, 1].forEach(function (s2) {
+        var a = [0, 0, 0], b = [0, 0, 0];
+        a[i] = -1; b[i] = 1; a[o[0]] = b[o[0]] = s1; a[o[1]] = b[o[1]] = s2;
+        line(project(a), project(b), theme["--rule"], 1);
+      }); });
+    });
+
+    edgeTicks([-1, -1, near[2]], [1, -1, near[2]], AX_OF[0]);
+    edgeTicks([near[0], -1, -1], [near[0], -1, 1], AX_OF[2]);
+    var best = null;
+    [-1, 1].forEach(function (sx) { [-1, 1].forEach(function (sz) {
+      var px = project([sx, 0, sz]).x;
+      if (!best || px < best.px) best = { px: px, sx: sx, sz: sz };
+    }); });
+    edgeTicks([best.sx, -1, best.sz], [best.sx, 1, best.sz], AX_OF[1]);
+
+    var pts = FRAMEWORKS.filter(function (f) { return f.visible; }).map(function (f) {
+      var w = worldPos(f); return { f: f, w: w, s: project(w) };
+    });
+
+    var facing = [0, 1, 2].map(wallFacing);
+    pts.forEach(function (p) {
+      var dim = selected && selected !== p.f, isSel = selected === p.f;
+      [0, 1, 2].forEach(function (i) {
+        var fa = facing[i];
+        if (fa <= 0 && i !== 1) return;
+        var q = p.w.slice(); q[i] = fw[i];
+        var qs = project(q);
+        if (i === 1 || isSel) {
+          var a = (dim ? 0.15 : isSel ? 0.75 : 0.45) * (i === 1 ? 1 : fa);
+          line(p.s, qs, hexA(p.f.color, a), isSel ? 1.4 : 1, [3, 3]);
+        }
+        if ((showShadows || isSel) && fa > 0) {
+          ctx.beginPath(); ctx.arc(qs.x, qs.y, Math.max(2.5, 4 * qs.k / 140), 0, Math.PI * 2);
+          ctx.fillStyle = hexA(p.f.color, (dim ? 0.12 : 0.35) * fa); ctx.fill();
+        }
+      });
+    });
+
+    pts.sort(function (a, b) { return b.s.depth - a.s.depth; });
+    lastScreen = [];
+    pts.forEach(function (p) {
+      var r = clamp(10 * p.s.k / 150, 6, 18);
+      var dim = selected && selected !== p.f;
+      ctx.globalAlpha = dim ? 0.4 : 1;
+      var g = ctx.createRadialGradient(p.s.x - r * 0.35, p.s.y - r * 0.35, r * 0.1, p.s.x, p.s.y, r);
+      g.addColorStop(0, hexA(p.f.color, 0.55)); g.addColorStop(0.25, p.f.color); g.addColorStop(1, p.f.color);
+      ctx.beginPath(); ctx.arc(p.s.x, p.s.y, r, 0, Math.PI * 2); ctx.fillStyle = g; ctx.fill();
+      ctx.lineWidth = 1.5; ctx.strokeStyle = theme["--paper"]; ctx.stroke();
+      if (selected === p.f || hovered === p.f) {
+        ctx.beginPath(); ctx.arc(p.s.x, p.s.y, r + 4, 0, Math.PI * 2);
+        ctx.strokeStyle = theme["--ink"]; ctx.lineWidth = 1.5; ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      lastScreen.push({ f: p.f, x: p.s.x, y: p.s.y, r: r });
+    });
+
+    // Labels: nearest first; each takes the least crowded of 16 spots, with a leader line if pushed out.
+    ctx.font = "600 12px " + theme["--sans"];
+    var boxes = lastScreen.map(function (q) { return { x: q.x - q.r - 2, y: q.y - q.r - 2, w: q.r * 2 + 4, h: q.r * 2 + 4, owner: q.f }; });
+    var overlapArea = function (a, b) {
+      return Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x)) *
+             Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
+    };
+    lastScreen.slice().reverse().forEach(function (q) {
+      var w = ctx.measureText(q.f.short).width + 6, h = 16, pick = null;
+      [q.r + 5, q.r + 22].forEach(function (o, ring) {
+        var d = o * 0.72;
+        [[o, -h / 2], [-o - w, -h / 2], [-w / 2, -o - h], [-w / 2, o],
+         [d, -d - h], [-d - w, -d - h], [d, d], [-d - w, d]].forEach(function (c, idx) {
+          var bx = { x: q.x + c[0], y: q.y + c[1], w: w, h: h };
+          var s = boxes.reduce(function (acc, b) { return acc + (b.owner === q.f ? 0 : overlapArea(b, bx)); }, 0);
+          if (bx.x < 2 || bx.y < 2 || bx.x + w > W - 2 || bx.y + h > H - 2) s += 5000;
+          s += ring * 120 + idx * 2;
+          if (!pick || s < pick.s) pick = { s: s, bx: bx, ring: ring };
+        });
+      });
+      var bx = pick.bx; boxes.push({ x: bx.x, y: bx.y, w: bx.w, h: bx.h, owner: q.f });
+      var dim = selected && selected !== q.f;
+      ctx.globalAlpha = dim ? 0.45 : 1;
+      if (pick.ring > 0) {
+        var tx = clamp(q.x, bx.x, bx.x + bx.w), ty = clamp(q.y, bx.y, bx.y + bx.h);
+        var ang = Math.atan2(ty - q.y, tx - q.x);
+        line({ x: q.x + Math.cos(ang) * q.r, y: q.y + Math.sin(ang) * q.r }, { x: tx, y: ty }, hexA(q.f.color, 0.8));
+      }
+      ctx.fillStyle = hexA(theme["--paper"], 0.85);
+      ctx.fillRect(bx.x, bx.y, bx.w, bx.h);
+      ctx.fillStyle = theme["--ink"]; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+      ctx.fillText(q.f.short, bx.x + 3, bx.y + h / 2 + 0.5);
+      ctx.globalAlpha = 1;
+    });
+  }
+
+  /* ---------- view changes ---------- */
+
+  function goTo(name) {
+    var t = VIEWS[name], from = view.yaw, to = t.yaw;
+    while (to - from > Math.PI) to -= Math.PI * 2;
+    while (to - from < -Math.PI) to += Math.PI * 2;
+    tween = {
+      start: performance.now(), dur: reduceMotion ? 1 : 700,
+      from: { yaw: from, pitch: view.pitch, ortho: view.ortho, dist: view.dist, panX: view.panX, panY: view.panY },
+      to:   { yaw: to, pitch: t.pitch, ortho: t.ortho, dist: BASE_DIST, panX: 0, panY: 0 }
+    };
+    setPressed(name); requestDraw();
+  }
+  function stepTween() {
+    var u = clamp((performance.now() - tween.start) / tween.dur, 0, 1);
+    var e = u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+    Object.keys(tween.to).forEach(function (k) { view[k] = tween.from[k] + (tween.to[k] - tween.from[k]) * e; });
+    if (u >= 1) tween = null; else requestDraw();
+  }
+  function setPressed(name) {
+    document.querySelectorAll(".space [data-view]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-view") === name)); });
+  }
+  function zoomBy(f) { tween = null; view.dist = clamp(view.dist * f, 1.6, 14); requestDraw(); }
+
+  /* ---------- pointer, wheel, keyboard ---------- */
+
+  var pointers = new Map(), dragMoved = 0, pinchStart = null;
+
+  canvas.addEventListener("pointerdown", function (e) {
+    canvas.setPointerCapture(e.pointerId);
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, pan: e.shiftKey || e.button === 2 });
+    dragMoved = 0;
+    if (pointers.size === 2) {
+      var v = Array.from(pointers.values());
+      pinchStart = { d: Math.hypot(v[0].x - v[1].x, v[0].y - v[1].y), dist: view.dist };
+    }
+  });
+  canvas.addEventListener("pointermove", function (e) {
+    var p = pointers.get(e.pointerId);
+    if (!p) { hover(e); return; }
+    var dx = e.clientX - p.x, dy = e.clientY - p.y;
+    dragMoved += Math.abs(dx) + Math.abs(dy);
+    p.x = e.clientX; p.y = e.clientY;
+    tween = null;
+    if (pointers.size === 2 && pinchStart) {
+      var v = Array.from(pointers.values());
+      view.dist = clamp(pinchStart.dist * pinchStart.d / Math.hypot(v[0].x - v[1].x, v[0].y - v[1].y), 1.6, 14);
+    } else if (p.pan) {
+      view.panX += dx; view.panY += dy;
+    } else {
+      view.yaw += dx * 0.008;
+      view.pitch = clamp(view.pitch + dy * 0.008, PITCH_MIN, PITCH_MAX);
+      if (view.ortho > 0 && dragMoved > 6) view.ortho = Math.max(0, view.ortho - 0.08);
+      setPressed(null);
+    }
+    hideTip(); requestDraw();
+  });
+  canvas.addEventListener("pointerup", function (e) {
+    var wasClick = pointers.size === 1 && dragMoved < 5;
+    pointers.delete(e.pointerId);
+    if (pointers.size < 2) pinchStart = null;
+    if (wasClick) { var h = hit(e); select(h && h === selected ? null : h); }
+  });
+  canvas.addEventListener("pointercancel", function (e) { pointers.delete(e.pointerId); pinchStart = null; });
+  canvas.addEventListener("pointerleave", function () { if (!pointers.size) { hovered = null; hideTip(); requestDraw(); } });
+  canvas.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+  canvas.addEventListener("wheel", function (e) { e.preventDefault(); zoomBy(Math.exp(e.deltaY * 0.0012)); }, { passive: false });
+  canvas.addEventListener("keydown", function (e) {
+    var step = 0.08, keys = {
+      ArrowLeft: function () { view.yaw -= step; }, ArrowRight: function () { view.yaw += step; },
+      ArrowUp: function () { view.pitch = clamp(view.pitch + step, PITCH_MIN, PITCH_MAX); },
+      ArrowDown: function () { view.pitch = clamp(view.pitch - step, PITCH_MIN, PITCH_MAX); },
+      "+": function () { zoomBy(0.88); }, "=": function () { zoomBy(0.88); }, "-": function () { zoomBy(1.14); },
+      "0": function () { goTo("iso"); }, Escape: function () { select(null); }
+    };
+    if (keys[e.key]) { e.preventDefault(); keys[e.key](); if (e.key !== "0") setPressed(null); requestDraw(); }
+  });
+
+  function hit(e) {
+    var r = canvas.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, best = null, bd = Infinity;
+    lastScreen.forEach(function (q) {
+      var d = Math.hypot(q.x - x, q.y - y);
+      if (d < q.r + 6 && d < bd) { bd = d; best = q.f; }
+    });
+    return best;
+  }
+  function hover(e) {
+    var h = hit(e);
+    if (h !== hovered) { hovered = h; requestDraw(); }
+    if (!h) { hideTip(); canvas.style.cursor = ""; return; }
+    canvas.style.cursor = "pointer";
+    var q = lastScreen.filter(function (s) { return s.f === h; })[0];
+    tip.innerHTML = "<b>" + esc(h.name) + "</b>" + AXES.map(function (a, i) { return esc(a.label) + " " + r0(h.means[i]); }).join(" · ");
+    tip.style.left = clamp(q.x, 140, W - 140) + "px";
+    tip.style.top = (canvas.offsetTop + q.y - q.r) + "px";
+    tip.classList.add("show");
+  }
+  function hideTip() { tip.classList.remove("show"); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  /* ---------- side panel ---------- */
+
+  var legend = document.getElementById("space-legend");
+  var detail = document.getElementById("space-detail");
+
+  function buildLegend() {
+    legend.innerHTML = "";
+    FRAMEWORKS.forEach(function (f) {
+      var li = document.createElement("li");
+      var cb = document.createElement("input");
+      cb.type = "checkbox"; cb.checked = f.visible; cb.disabled = !f.complete;
+      cb.setAttribute("aria-label", "Show " + f.name);
+      cb.addEventListener("change", function () { f.visible = cb.checked; if (!f.visible && selected === f) select(null); requestDraw(); });
+      var b = document.createElement("button");
+      b.disabled = !f.complete;
+      b.innerHTML = '<span class="sw" style="background:' + f.color + '"></span><span>' + esc(f.short) + '</span><span class="nums">' +
+        (f.complete ? f.means.map(r0).join(" · ") : "not fully coded") + "</span>";
+      b.title = f.complete ? AXES.map(function (a) { return a.label; }).join(" · ") : "Appears once every feature is scored";
+      b.addEventListener("click", function () { select(selected === f ? null : f); });
+      f._btn = b;
+      li.appendChild(cb); li.appendChild(b); legend.appendChild(li);
+    });
+  }
+
+  function dist3(a, b) { return Math.hypot.apply(null, a.means.map(function (m, i) { return m - b.means[i]; })); }
+
+  function renderDetail() {
+    FRAMEWORKS.forEach(function (f) { f._btn.classList.toggle("sel", f === selected); });
+    if (!selected) {
+      detail.innerHTML = '<p style="margin:0;color:var(--ink-soft);font-size:.82rem;line-height:1.55">Select a framework to see its axis averages, its twelve feature scores and which framework sits closest to it.</p>';
+      return;
+    }
+    var f = selected;
+    var mini = '<div class="mini">' + AXES.map(function (a, i) {
+      return '<div class="a' + a.n + '"><span class="k">' + esc(a.label) + '</span><span class="v">' + r0(f.means[i]) + '</span></div>' +
+             '<div class="track a' + a.n + '"><span class="fill" style="width:' + f.means[i] + '%"></span></div>';
+    }).join("") + "</div>";
+    var rows = AXES.map(function (a) {
+      return '<tr class="grp"><td colspan="2" style="color:var(--axis-' + a.n + ')">' + esc(a.label) + "</td></tr>" +
+        a.features.map(function (ft) {
+          var nm = ft.href ? '<a href="' + esc(ft.href) + '">' + esc(ft.name) + "</a>" : esc(ft.name);
+          var val = ft.reverse ? '<span class="raw">' + ft.scores[f.id] + "&rarr;</span>" + entered(ft, f.id) : ft.scores[f.id];
+          return '<tr><td><span class="num">' + esc(ft.id) + "</span>" + nm + "</td><td>" + val + "</td></tr>";
+        }).join("");
+    }).join("");
+    var others = FRAMEWORKS.filter(function (o) { return o !== f && o.complete; })
+      .map(function (o) { return { o: o, d: dist3(f, o) }; }).sort(function (a, b) { return a.d - b.d; });
+    var near = others.length ? '<p class="near">Closest: <b>' + esc(others[0].o.short) + "</b> (" + r0(others[0].d) +
+      " points apart) · Farthest: <b>" + esc(others[others.length - 1].o.short) + "</b> (" + r0(others[others.length - 1].d) + ")</p>" : "";
+    detail.innerHTML = "<h3>" + esc(f.name) + '</h3><p class="fw-meta">' + esc(f.meta) + "</p>" + mini + near +
+      '<table class="space-feat"><tbody>' + rows + "</tbody></table>" +
+      '<p style="font-size:.72rem;color:var(--ink-faint);margin:.6rem 0 0">Arrows mark reverse-coded features: raw score &rarr; value entering the average.</p>';
+  }
+
+  function select(f) { selected = f; renderDetail(); requestDraw(); }
+
+  /* ---------- toolbar ---------- */
+
+  document.querySelectorAll(".space [data-view]").forEach(function (b) {
+    b.addEventListener("click", function () { goTo(b.getAttribute("data-view")); });
+  });
+  document.getElementById("t-shadows").addEventListener("click", function (e) {
+    showShadows = !showShadows; e.currentTarget.setAttribute("aria-pressed", String(showShadows)); requestDraw();
+  });
+  document.getElementById("t-spin").addEventListener("click", function (e) {
+    spinning = !spinning; e.currentTarget.setAttribute("aria-pressed", String(spinning));
+    if (spinning && view.ortho > 0) goTo("iso");
+    requestDraw();
+  });
+  document.getElementById("z-in").addEventListener("click", function () { zoomBy(0.85); });
+  document.getElementById("z-out").addEventListener("click", function () { zoomBy(1.18); });
+  document.getElementById("reset").addEventListener("click", function () { select(null); goTo("iso"); });
+  document.getElementById("png").addEventListener("click", function () {
+    var a = document.createElement("a");
+    a.download = "governance-index-3d-map.png"; a.href = canvas.toDataURL("image/png"); a.click();
+  });
+
+  /* ---------- start ---------- */
+
+  readTheme();
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { readTheme(); requestDraw(); });
+  new ResizeObserver(resize).observe(canvas);
+  resize();
+
+  load().then(function (res) {
+    prepare(res.data);
+    document.querySelector('[data-view="top"]').textContent = shortLabel(0) + " × " + shortLabel(1);
+    document.querySelector('[data-view="front"]').textContent = shortLabel(0) + " × " + shortLabel(2);
+    document.querySelector('[data-view="side"]').textContent = shortLabel(1) + " × " + shortLabel(2);
+
+    if (res.data.notice) {
+      document.getElementById("space-notice").innerHTML =
+        '<div class="notice" role="note"><span class="label">' + esc(res.data.notice) + "</span>" +
+        '<p>This map is drawn from the draft scores on the <a href="frameworks.html">Scores page</a>. ' +
+        "Not yet findings — please do not cite until that page’s notice is gone.</p></div>";
+    }
+    document.getElementById("space-caption").innerHTML =
+      "<b>Figure 4.</b> Each framework placed at its three axis averages, 0–100, where higher always means more of the property named. " +
+      "The floor is " + esc(AXES[0].label.toLowerCase()) + " against " + esc(AXES[1].label.toLowerCase()) + "; height is " + esc(AXES[2].label.toLowerCase()) + "." +
+      (res.data.notice ? " <em>Draft coding, awaiting author review.</em>" : "");
+    if (!res.live) {
+      var src = document.getElementById("space-source");
+      src.hidden = false;
+      src.textContent = "Showing the saved copy of the scores from " + SAVED_COPY.date +
+        ", because the live Scores table could not be read. This is normal when the file is opened straight from your computer; on the live site the map reads the table directly.";
+    }
+    canvas.setAttribute("aria-label", "3D scatter plot. " + FRAMEWORKS.filter(function (f) { return f.complete; }).map(function (f) {
+      return f.name + ": " + AXES.map(function (a, i) { return a.label + " " + r0(f.means[i]); }).join(", ");
+    }).join(". ") + ". Use the arrow keys to rotate and plus or minus to zoom.");
+
+    buildLegend(); renderDetail();
+    document.getElementById("space-loading").remove();
+    ready = true; requestDraw();
+  });
+})();
+</script>
+</body>
+</html>
